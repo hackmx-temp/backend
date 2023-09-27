@@ -30,10 +30,7 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   password: {
-    type: DataTypes.STRING(64),
-    validate: {
-      is: /^[0-9a-f]{64}$/i
-    }
+    type: DataTypes.STRING(),
   },
   university: {
     type: DataTypes.STRING,
@@ -63,4 +60,4 @@ const User = sequelize.define('User', {
     }
 });
 
-module.exports = User
+module.exports = User;
