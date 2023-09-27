@@ -1,25 +1,17 @@
+const sequelize = require("./src/database")
 const container = require("./src/startup/container");
 const server = container.resolve("app");
 
-const mysql = require('mysql2/promise');
-
 async function startServer() {
   try {
-    // Create the connection to the database
-    const connection = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'reumatologia',
-      database: 'hack-mx-db'
-    });
-
-    // Now you can use 'connection' as a Promise-based connection
-
-    // Start your server
-    await server.start();
+    await sequelize.sync({ force: true });
+    console.log("All models were synchronized successfully.");
+    console.log('Connection to the DB has been established successfully.');
+    server.start();
   } catch (error) {
-    console.error(error);
+    console.error('Unable to connect to the database:', error);
   }
 }
+
 
 startServer();
