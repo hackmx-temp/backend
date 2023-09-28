@@ -23,10 +23,3 @@ class Server {
 }
 
 module.exports = Server;
-
-/*
-DB_HOST = "localhost",
-DB_USER = "root",
-DB_PASSWORD = "reumatologia",
-DB_NAME = "hack-mx-db",
-*/
