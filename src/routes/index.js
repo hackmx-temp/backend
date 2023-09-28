@@ -18,7 +18,7 @@ module.exports = function({HomeRoutes, UserRoutes}){
     apiRoutes.use("/home", HomeRoutes);
     apiRoutes.use("/user", UserRoutes);
 
-    router.use("/v1/api", apiRoutes);
+    router.use("/hackMX", apiRoutes);
 
     router.use(NotFoundMiddleware);
     router.use(ErrorMiddleware);

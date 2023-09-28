@@ -4,11 +4,11 @@ class BaseRepository {
     }
 
     async get(id) {
-      return await this.model.findById(id);
+      return await this.model.findByPk(id);
     }
 
     async getAll() {
-      return await this.model.findAll()
+      return await this.model.findAll();
     }
 
     async create(entity) {
@@ -16,12 +16,15 @@ class BaseRepository {
     }
 
     async update(id, entity) {
-      return await this.model.findByIdAndUpdate(id, entity, { new: true });
+      const ExistingEntity  = await this.get(id)
+      return await ExistingEntity.update(entity);
     }
 
+
     async delete(id) {
-        await this.model.findByIdAndDelete(id);
-        return true;
+      const ExistingEntity  = await this.get(id)
+      await ExistingEntity.destroy(id);
+      return true;
     }
   }
 

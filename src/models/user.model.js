@@ -15,7 +15,8 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   last_name: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING,
@@ -30,7 +31,8 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   password: {
-    type: DataTypes.STRING(),
+    type: DataTypes.STRING,
+    allowNull: false
   },
   university: {
     type: DataTypes.STRING,
@@ -44,18 +46,33 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  is_from_Tec: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  enrollment_id: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: true,
+    validate: {
+      is: /^A0[0-9]{7}$/i
+    }
+  },
   gender: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isIn: [['Male', 'Female', 'Non Binary']],
+    }
   },
 }, {
     freezeTableName: true,
     instanceMethods: {
         generateHash(password) {
-            return bcrypt.hash(password, bcrypt.genSaltSync(8));
+            return hashSync(password, genSaltSync(8));
         },
         validPassword(password) {
-            return bcrypt.compare(password, this.password);
+            return compareSync(password, this.password);
         }
     }
 });

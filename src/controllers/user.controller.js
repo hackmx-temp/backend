@@ -15,6 +15,18 @@ class UserController {
     return res.send(users);
   }
 
+  async getUserByName(req, res) {
+    const { name } = req.params;
+    const user = await _userService.get(name);
+    return res.send(user);
+  }
+
+  async getUserByEmail(req, res) {
+    const { email } = req.params;
+    const user = await _userService.get(email);
+    return res.send(user);
+  }
+
   async create(req, res) {
     const { body } = req;
     const user = await _userService.create(body);
