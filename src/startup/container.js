@@ -5,13 +5,13 @@ const config = require("../config");
 const app = require('.')
 
 // services
-const { HomeService, UserService } = require("../services");
+const { HomeService, UserService, AuthService } = require("../services");
 
 // controllers
-const { HomeController, UserController  } = require("../controllers");
+const { HomeController, UserController, AuthController  } = require("../controllers");
 
 // routes
-const { HomeRoutes, UserRoutes } = require("../routes/index.routes");
+const { HomeRoutes, UserRoutes, AuthRoutes } = require("../routes/index.routes");
 const Routes = require("../routes");
 
 // models
@@ -30,16 +30,19 @@ container
     })
     .register({
         HomeService: asClass(HomeService).singleton(),
-        UserService: asClass(UserService).singleton()
+        UserService: asClass(UserService).singleton(),
+        AuthService: asClass(AuthService).singleton()
 
     })
     .register({
         HomeController: asClass(HomeController.bind(HomeController)).singleton(),
-        UserController: asClass(UserController.bind(UserController)).singleton()
+        UserController: asClass(UserController.bind(UserController)).singleton(),
+        AuthController: asClass(AuthController.bind(AuthController)).singleton()
     })
     .register({
         HomeRoutes: asFunction(HomeRoutes).singleton(),
-        UserRoutes: asFunction(UserRoutes).singleton()
+        UserRoutes: asFunction(UserRoutes).singleton(),
+        AuthRoutes: asFunction(AuthRoutes).singleton()
 
     })
     .register({

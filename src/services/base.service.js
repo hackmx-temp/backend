@@ -7,7 +7,7 @@ class BaseService {
       if (!id) {
         const error = new Error();
         error.status = 400;
-        error.message = "id must be sent";
+        error.message = "id must be sent.";
         throw error;
       }
 
@@ -16,7 +16,7 @@ class BaseService {
       if (!currentEntity) {
         const error = new Error();
         error.status = 404;
-        error.message = "entity does not found";
+        error.message = "entity not found.";
         throw error;
       }
 
@@ -35,7 +35,7 @@ class BaseService {
       if (!id) {
         const error = new Error();
         error.status = 400;
-        error.message = "id must be sent";
+        error.message = "id must be sent.";
         throw error;
       }
 
@@ -46,7 +46,7 @@ class BaseService {
       if (!id) {
         const error = new Error();
         error.status = 400;
-        error.message = "id must be sent";
+        error.message = "id must be sent.";
         throw error;
       }
 

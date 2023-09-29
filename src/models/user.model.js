@@ -67,14 +67,23 @@ const User = sequelize.define('User', {
   },
 }, {
     freezeTableName: true,
-    instanceMethods: {
-        generateHash(password) {
-            return hashSync(password, genSaltSync(8));
-        },
-        validPassword(password) {
-            return compareSync(password, this.password);
-        }
+    hooks: {
+      beforeCreate: (User) => {
+          const salt = genSaltSync(10);
+          User.password = hashSync(User.password, salt);
+      }
     }
 });
+
+User.prototype.validatePassword = function (password) {
+  return compareSync(password, this.password);
+}
+
+User.prototype.toJSON =  function () {
+  var values = Object.assign({}, this.get());
+  delete values.password;
+  return values;
+}
+
 
 module.exports = User;
