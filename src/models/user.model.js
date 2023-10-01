@@ -30,11 +30,15 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING(10),
     allowNull: false
   },
-  password: {
+  password: { 
     type: DataTypes.STRING,
     allowNull: false
   },
   university: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  campus: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -46,7 +50,7 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  is_from_Tec: {
+  is_from_tec: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
@@ -61,9 +65,6 @@ const User = sequelize.define('User', {
   gender: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      isIn: [['Male', 'Female', 'Non Binary']],
-    }
   },
 }, {
     freezeTableName: true,

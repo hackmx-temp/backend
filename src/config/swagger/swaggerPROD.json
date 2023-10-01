@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "title": "Swagger HackMX",
     "contact": {
-      "email": "jose.aram.mendez@gmail.com"
+      "email": "admin@hackmx.mx"
     },
     "license": {
       "name": "Apache 2.0",
@@ -152,7 +152,7 @@
     "User": {
       "type": "object",
       "properties": {
-        "Id": {
+        "id": {
           "type": "integer"
         },
         "name": {
@@ -173,13 +173,16 @@
         "university": {
           "type": "string"
         },
+        "campus":{
+          "type": "string"
+        },
         "career": {
           "type": "string"
         },
         "semester": {
           "type": "string"
         },
-        "is_from_Tec": {
+        "is_from_tec": {
           "type": "boolean"
         },
         "enrollment_id": {
