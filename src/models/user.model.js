@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database")
-const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
+// const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
 
 
 const User = sequelize.define('User', {
@@ -30,14 +30,6 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING(10),
     allowNull: false
   },
-  password: { 
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  university: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
   campus: {
     type: DataTypes.STRING,
     allowNull: false
@@ -50,9 +42,9 @@ const User = sequelize.define('User', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  is_from_tec: {
+  bus_required: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false
+    allowNull: false
   },
   enrollment_id: {
     type: DataTypes.STRING,
@@ -66,23 +58,10 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-}, {
-    freezeTableName: true,
-    hooks: {
-      beforeCreate: (User) => {
-          const salt = genSaltSync(10);
-          User.password = hashSync(User.password, salt);
-      }
-    }
-});
-
-User.prototype.validatePassword = function (password) {
-  return compareSync(password, this.password);
-}
+},);
 
 User.prototype.toJSON =  function () {
   var values = Object.assign({}, this.get());
-  delete values.password;
   return values;
 }
 

@@ -26,6 +26,9 @@ class BaseRepository {
       await ExistingEntity.destroy(id);
       return true;
     }
+    async count(){
+      return await this.model.count();
+    }
   }
 
   module.exports = BaseRepository;

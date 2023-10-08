@@ -52,6 +52,10 @@ class BaseService {
 
       return await this.repository.delete(id);
     }
+
+    async count(){
+      return await this.repository.count();
+    }
   }
 
   module.exports = BaseService;

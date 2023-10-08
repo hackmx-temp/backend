@@ -211,12 +211,6 @@
         "phone_number": {
           "type": "string"
         },
-        "password": {
-          "type": "string"
-        },
-        "university": {
-          "type": "string"
-        },
         "campus":{
           "type": "string"
         },
@@ -225,9 +219,6 @@
         },
         "semester": {
           "type": "string"
-        },
-        "is_from_tec": {
-          "type": "boolean"
         },
         "enrollment_id": {
           "type": "string"

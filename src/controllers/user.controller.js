@@ -1,4 +1,4 @@
-let _userService = null;
+let _userService = require("../services/user.service");
 class UserController {
   constructor({ UserService }) {
     _userService = UserService;
@@ -32,6 +32,20 @@ class UserController {
     const { userId } = req.params;
     const deletedUser = await _userService.delete(userId);
     return res.send(deletedUser);
+  }
+
+  async create(req, res){
+    const { body } = req;
+    const userCreated = await _userService.create(body);
+    return res.status(201).send({id: userCreated.id});
+  }
+
+  async count(req, res){
+    const count = await _userService.count();
+    if(count >= 200){
+      return res.status(202).send({message: "Max number of users reached"});
+    }
+    return res.send({count: count});
   }
 }
 
