@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database")
 // const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
-
-
 const User = sequelize.define('User', {
   // Model attributes are defined here
   id: {
@@ -23,7 +21,7 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
     validate: {
-        isEmail: true
+      isEmail: true
     }
   },
   phone_number: {
@@ -58,12 +56,19 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-},);
+  allergies: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  medical_conditions: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
 
-User.prototype.toJSON =  function () {
+User.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
   return values;
 }
-
 
 module.exports = User;
