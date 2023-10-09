@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
-const { DB_NAME,
-        DB_USER,
-        DB_PASS,
-        DB_HOST,
-        DIALECT } = require("../config")
+const { MYSQLDB_DATABASE,
+        MYSQLDB_USER,
+        MYSQLDB_PASSWORD,
+        MYSQLDB_HOST
+        } = require("../config")
 
 /*
 // It can be connected via passing a connection URI
@@ -13,11 +13,12 @@ const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname') 
 
 // Passing parameters separately (other dialects)
 const sequelize = new Sequelize(
-  DB_NAME,
-  DB_USER,
-  DB_PASS, {
-    host: DB_HOST,
-    dialect: DIALECT
+  MYSQLDB_DATABASE,
+  MYSQLDB_USER,
+  MYSQLDB_PASSWORD, {
+    host: MYSQLDB_HOST,
+    dialect: 'mysql',
+    port: "3306",
   }
 );
 

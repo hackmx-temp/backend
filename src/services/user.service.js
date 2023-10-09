@@ -5,7 +5,6 @@ class UserService extends BaseService {
     super(UserRepository);
     this.userRepository = UserRepository;
   }
-
   async getUserByName(name) {
     if (!name) {
       const error = new Error();

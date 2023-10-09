@@ -11,9 +11,9 @@ class Server {
 
     start(){
         return new Promise(resolve => {
-            _express.listen(_config.PORT, () => {
+            _express.listen(_config.NODE_LOCAL_PORT, () => {
                 console.log(
-                    "HackMX API running on port " + _config.PORT
+                    "Hack-MX running on port " + _config.NODE_LOCAL_PORT
                 );
 
                 resolve();

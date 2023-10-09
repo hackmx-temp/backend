@@ -30,6 +30,18 @@ npm run start
 ```
 npm run dev
 ```
+
+### Commands For Docker
+
+```sh
+docker-compose up # to execute development
+docker-compose -f docker-compose.prod.yml up # to execute production
+```
+
+### Considerations
+
+- When mysql container is created, it will create a root user and a another user in the `MYSQLDB_USER` environment variable, each with its own password
+
 ## Authors
 * [@Aram32mm](https://github.com/Aram32mm)
 * [@EstherRC](https://github.com/EstherRC)
