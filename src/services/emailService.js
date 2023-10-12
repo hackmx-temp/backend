@@ -19,7 +19,7 @@ async function sendEmailsToAllUsers() {
     // Itera sobre los correos electrónicos y envía un correo a cada uno
     for (const email of emails) {
       const mailOptions = {
-        from: 'tu_correo@gmail.com',
+        from: 'admin@hackmx.mx',
         to: email,
         subject: 'Asunto del correo',
         text: 'Contenido del correo'
