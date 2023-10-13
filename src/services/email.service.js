@@ -1,25 +1,24 @@
-const nodemailer = require('nodemailer');
-
-// Se requiere modificar basado en la base de datos -> const { getEmailsFromDatabase } = require('');
+import { createTransport } from 'nodemailer';
+import { getEmailsFromDatabase } from './emailHelper'; 
 
 async function sendEmailsToAllUsers() {
   try {
-    // Obtiene los correos electrónicos desde la base de datos
-    const emails = await getEmailsFromDatabase();
-
-    // Configura el correo de donde se evian
-    const transporter = nodemailer.createTransport({
-      service: '',
+    const emails = await getEmailsFromDatabase(); 
+   
+    const transporter = createTransport({
+      host: '', // Reemplaza con tu servidor SMTP
+      port: 1,
+      secure: false,
       auth: {
-        user: '',
-        pass: ''
+        user: 'admin@hack.mx',
+        pass: 'AdaDev*3CDMX'
       }
     });
 
     // Itera sobre los correos electrónicos y envía un correo a cada uno
     for (const email of emails) {
       const mailOptions = {
-        from: 'tu_correo@gmail.com',
+        from: 'admin@hack.mx',
         to: email,
         subject: 'Asunto del correo',
         text: 'Contenido del correo'
@@ -34,4 +33,4 @@ async function sendEmailsToAllUsers() {
   }
 }
 
-module.exports = { sendEmailsToAllUsers };
+export default { sendEmailsToAllUsers };
