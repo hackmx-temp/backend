@@ -4,7 +4,7 @@ const server = container.resolve("app");
 
 async function startServer() {
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false, alter: true });
     console.log("All models were synchronized successfully.");
     console.log('Connection to the DB has been established successfully.');
     server.start();
