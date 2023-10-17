@@ -39,7 +39,7 @@ class UserController {
     if (body.campus === "CCM") {
       const error = new Error();
       error.status = 400;
-      error.message = "Registros llenos";
+      error.message = "Registros para campus CCM completados.";
       throw error;
     }
     const userCreated = await _userService.create(body);
