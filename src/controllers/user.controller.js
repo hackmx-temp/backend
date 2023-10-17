@@ -36,6 +36,12 @@ class UserController {
 
   async create(req, res){
     const { body } = req;
+    if (body.campus === "CCM") {
+      const error = new Error();
+      error.status = 400;
+      error.message = "Registros llenos";
+      throw error;
+    }
     const userCreated = await _userService.create(body);
     return res.status(201).send({id: userCreated.id});
   }
