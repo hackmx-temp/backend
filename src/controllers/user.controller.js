@@ -37,7 +37,7 @@ class UserController {
   async create(req, res){
     const { body } = req;
     const campus = body.campus;
-    if (campus === 'CCM' || _userService.countByCampus(campus) >= 75) {
+    if (_userService.countByCampus(campus).count >= 75) {
       const error = new Error();
       error.status = 400;
       error.message = `Registros para ${campus} completados.`;
