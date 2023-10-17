@@ -47,6 +47,12 @@ class UserController {
     return res.status(201).send({id: userCreated.id});
   }
 
+  async getCoundByCampus(req, res){
+    const { campus } = req.params;
+    const count = await _userService.countByCampus(campus);
+    return res.send({count: count});
+  }
+
   async count(req, res){
     const count = await _userService.count();
     if(count >= 400){
