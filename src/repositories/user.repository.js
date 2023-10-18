@@ -19,6 +19,12 @@ class UserRepository extends BaseRepository {
     });
   }
 
+  async countByCampus(campus){
+    return await _user.count({
+      where: { campus: campus }
+    });
+  }
+
 }
 
 module.exports = UserRepository;

@@ -3,6 +3,7 @@ class UserController {
   constructor({ UserService }) {
     _userService = UserService;
   }
+  static MAX_USERS_PER_CAMPUS = 40;
 
   async get(req, res) {
     const { userId } = req.params;
@@ -36,14 +37,31 @@ class UserController {
 
   async create(req, res){
     const { body } = req;
+    const campus = body.campus;
+    const count = await _userService.countByCampus(campus);
+    if (count >= UserController.MAX_USERS_PER_CAMPUS) {
+      const error = new Error();
+      error.status = 400;
+      error.message = `Registros para ${campus} completados.`;
+      throw error;
+    }
     const userCreated = await _userService.create(body);
     return res.status(201).send({id: userCreated.id});
   }
 
+  async countByCampus(req, res){
+    const { campus } = req.params;
+    const count = await _userService.countByCampus(campus);
+    return res.send({count: count});
+  }
+
   async count(req, res){
     const count = await _userService.count();
-    if(count >= 200){
-      return res.status(202).send({message: "Max number of users reached"});
+    if(count >= 400){
+      const error = new Error();
+      error.status = 400;
+      error.message = `Registro completado.`;
+      throw error;
     }
     return res.send({count: count});
   }

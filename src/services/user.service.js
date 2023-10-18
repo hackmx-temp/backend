@@ -27,6 +27,17 @@ class UserService extends BaseService {
 
     return await this.userRepository.getUserByEmail(email);
   }
+
+  async countByCampus(campus){
+    if (!campus) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "campus must be sent.";
+      throw error;
+    }
+
+    return await this.userRepository.countByCampus(campus);
+  }
 }
 
 module.exports = UserService;
