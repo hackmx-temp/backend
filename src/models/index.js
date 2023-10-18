@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database")
-// const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
+const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
 
 const User = sequelize.define('User', {
   id: {
@@ -74,6 +74,14 @@ const RegisteredUser = sequelize.define('RegisteredUser', {
   is_leader: {
     type: DataTypes.BOOLEAN,
     allowNull: false
+  }, 
+}, {
+  freezeTableName: true,
+  hooks: {
+    beforeCreate: (registeredUser) => {
+      const salt = genSaltSync();
+      registeredUser.password = hashSync(registeredUser.password, salt);
+    }
   }
 });
 
@@ -88,11 +96,9 @@ const Team = sequelize.define('Team', {
     unique: true,
     allowNull: false
   },
-  number_participants: {
-    type: DataTypes.INTEGER
-  },
   is_completed: {
-    type: DataTypes.STRING,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
     allowNull: false
   }
 });
@@ -109,21 +115,41 @@ const TeamRequest = sequelize.define('TeamRequest', {
   }
 });
 
-
-
-
-User.hasOne(RegisteredUser);
+// One to one relationship between User and RegisteredUser
+User.hasOne(RegisteredUser, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
 RegisteredUser.belongsTo(User);
 
-Team.hasOne(RegisteredUser);
+// One to many relationship between RegisteredUser and Team
+Team.hasMany(RegisteredUser, {
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE'
+});
+// If a registered user (hacker) is deleted, the team will still exist
 RegisteredUser.belongsTo(Team);
 
+// One to many relationship between TeamRequest and Team 
+TeamRequest.hasMany(Team, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+RegisteredUser.belongsTo(TeamRequest);
 
-
+// One to many relationship between TeamRequests and RegisteredUsers
+TeamRequest.hasMany(RegisteredUser, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+RegisteredUser.belongsTo(TeamRequest);
 
 User.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
   return values;
+}
+RegisteredUser.prototype.validatePassword = function (password) {
+  return compareSync(password, this.password);
 }
 RegisteredUser.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
