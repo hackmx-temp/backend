@@ -122,18 +122,31 @@ const TeamRequest = sequelize.define('TeamRequest', {
 });
 
 // One to one relationship between RegisteredUser and User
-User.hasOne(RegisteredUser);
-RegisteredUser.belongsTo(User);
+User.hasOne(RegisteredUser, {
+  foreignKey: "user_id"
+});
+RegisteredUser.belongsTo(User, {
+  foreignKey: "user_id"
+});
 
 // One to one relationship between RegisteredUser and Team
-Team.hasOne(RegisteredUser);
-RegisteredUser.belongsTo(Team);
+Team.hasOne(RegisteredUser, {
+  foreignKey: "team_id"
+});
+RegisteredUser.belongsTo(Team, {
+  foreignKey: "team_id"
+});
 
 // Many to many relationship between RegisteredUser and TeamRequest
-Team.belongsToMany(RegisteredUser, { through: 'TeamRequest' });
+Team.belongsToMany(RegisteredUser, { 
+  through: 'TeamRequest',
+  foreignKey: 'team_id'
+ });
 
 // Many to many relationship between RegisteredUser and TeamRequest
-RegisteredUser.belongsToMany(Team, { through: 'TeamRequest' });
+RegisteredUser.belongsToMany(Team, { through: 'TeamRequest',
+  foreignKey: 'team_id'
+ });
 
 
 User.prototype.toJSON = function () {
