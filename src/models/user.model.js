@@ -30,7 +30,10 @@ const User = sequelize.define('User', {
   },
   campus: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isIn: [['CCM', 'Toluca', 'CSF', 'CEM']]
+    }
   },
   career: {
     type: DataTypes.STRING,
