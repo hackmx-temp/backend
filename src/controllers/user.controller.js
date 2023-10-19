@@ -3,7 +3,7 @@ class UserController {
   constructor({ UserService }) {
     _userService = UserService;
   }
-  static MAX_USERS_PER_CAMPUS = 40;
+  static MAX_USERS_PER_CAMPUS = 50;
 
   async get(req, res) {
     const { userId } = req.params;
@@ -16,11 +16,11 @@ class UserController {
     return res.send(users);
   }
 
-  async create(req, res) {
+  /* async create(req, res) {
     const { body } = req;
     const user = await _userService.create(body);
     return res.send(user);
-  }
+  } */
 
   async update(req, res) {
     const { body } = req;
