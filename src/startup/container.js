@@ -15,10 +15,24 @@ const {
  } = require("../services");
 
 // controllers
-const { HomeController, UserController, AuthController  } = require("../controllers");
+const {
+    HomeController,
+    UserController,
+    AuthController,
+    RegisteredUserController,
+    TeamController,
+    TeamRequestController
+} = require("../controllers");
 
 // routes
-const { HomeRoutes, UserRoutes, AuthRoutes } = require("../routes/index.routes");
+const {
+    HomeRoutes,
+    UserRoutes,
+    AuthRoutes,
+    RegisteredUserRoutes,
+    TeamRoutes,
+    TeamRequestRoutes
+} = require("../routes/index.routes");
 const Routes = require("../routes");
 
 // models
@@ -56,13 +70,18 @@ container
     .register({
         HomeController: asClass(HomeController.bind(HomeController)).singleton(),
         UserController: asClass(UserController.bind(UserController)).singleton(),
-        AuthController: asClass(AuthController.bind(AuthController)).singleton()
+        AuthController: asClass(AuthController.bind(AuthController)).singleton(),
+        RegisteredUserController: asClass(RegisteredUserController.bind(RegisteredUserController)).singleton(),
+        TeamController: asClass(TeamController.bind(TeamController)).singleton(),
+        TeamRequestController: asClass(TeamRequestController.bind(TeamRequestController)).singleton(),
     })
     .register({
         HomeRoutes: asFunction(HomeRoutes).singleton(),
         UserRoutes: asFunction(UserRoutes).singleton(),
-        AuthRoutes: asFunction(AuthRoutes).singleton()
-
+        AuthRoutes: asFunction(AuthRoutes).singleton(),
+        RegisteredUserRoutes: asFunction(RegisteredUserRoutes).singleton(),
+        TeamRoutes: asFunction(TeamRoutes).singleton(),
+        TeamRequestRoutes: asFunction(TeamRequestRoutes).singleton()
     })
     .register({
         User: asValue(User),
