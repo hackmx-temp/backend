@@ -5,7 +5,7 @@ const config = require("../config");
 const app = require('.')
 
 // services
-const { HomeService, UserService, AuthService } = require("../services");
+const { HomeService, UserService, AuthService, TeamService } = require("../services");
 
 // controllers
 const { HomeController, UserController, AuthController  } = require("../controllers");
@@ -15,7 +15,7 @@ const { HomeRoutes, UserRoutes, AuthRoutes } = require("../routes/index.routes")
 const Routes = require("../routes");
 
 // models
-const { User } = require("../models")
+const { User, RegisteredUser, Team, TeamRequest } = require("../models")
 
 // repositories
 const { UserRepository } = require("../repositories")
@@ -46,7 +46,10 @@ container
 
     })
     .register({
-        User: asValue(User)
+        User: asValue(User),
+        RegisteredUser: asValue(RegisteredUser),
+        Team: asValue(Team),
+        TeamRequest: asValue(TeamRequest)
     })
     .register({
         UserRepository: asClass(UserRepository).singleton()

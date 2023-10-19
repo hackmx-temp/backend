@@ -6,3 +6,5 @@ class RegisteredUserRepository extends BaseRepository {
         this.registeredUser = RegisteredUser;
     }
 }
+
+module.exports = RegisteredUserRepository;

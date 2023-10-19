@@ -13,3 +13,5 @@ class TeamService extends BaseService {
     async create(team) {
     }
 }
+
+module.exports = TeamService;
