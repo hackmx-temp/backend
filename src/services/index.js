@@ -2,5 +2,7 @@ module.exports = {
     HomeService: require("./home.service"),
     UserService: require("./user.service"),
     AuthService: require("./auth.service"),
-    TeamService: require("./team.service")
+    RegisteredUserService: require("./registeredUser.service"),
+    TeamService: require("./team.service"),
+    TeamRequestService: require("./teamRequest.service")
 }

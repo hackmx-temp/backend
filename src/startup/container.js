@@ -5,7 +5,14 @@ const config = require("../config");
 const app = require('.')
 
 // services
-const { HomeService, UserService, AuthService, TeamService } = require("../services");
+const {
+    HomeService,
+    UserService,
+    AuthService,
+    RegisteredUserService,
+    TeamService,
+    TeamRequestService
+ } = require("../services");
 
 // controllers
 const { HomeController, UserController, AuthController  } = require("../controllers");
@@ -15,10 +22,20 @@ const { HomeRoutes, UserRoutes, AuthRoutes } = require("../routes/index.routes")
 const Routes = require("../routes");
 
 // models
-const { User, RegisteredUser, Team, TeamRequest } = require("../models")
+const {
+    User,
+    RegisteredUser,
+    Team,
+    TeamRequest
+} = require("../models")
 
 // repositories
-const { UserRepository } = require("../repositories")
+const {
+    UserRepository,
+    RegisteredUserRepository,
+    TeamRepository,
+    TeamRequestRepository
+} = require("../repositories")
 
 const container = createContainer();
 
@@ -31,8 +48,10 @@ container
     .register({
         HomeService: asClass(HomeService).singleton(),
         UserService: asClass(UserService).singleton(),
-        AuthService: asClass(AuthService).singleton()
-
+        AuthService: asClass(AuthService).singleton(),
+        RegisteredUserService: asClass(RegisteredUserService).singleton(),
+        TeamService: asClass(TeamService).singleton(),
+        TeamRequestService: asClass(TeamRequestService).singleton()
     })
     .register({
         HomeController: asClass(HomeController.bind(HomeController)).singleton(),
@@ -52,7 +71,10 @@ container
         TeamRequest: asValue(TeamRequest)
     })
     .register({
-        UserRepository: asClass(UserRepository).singleton()
+        UserRepository: asClass(UserRepository).singleton(),
+        RegisteredUserRepository: asClass(RegisteredUserRepository).singleton(),
+        TeamRepository: asClass(TeamRepository).singleton(),
+        TeamRequestRepository: asClass(TeamRequestRepository).singleton()
     });
 
 module.exports = container;
