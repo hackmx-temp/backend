@@ -74,7 +74,7 @@ const RegisteredUser = sequelize.define('RegisteredUser', {
   is_leader: {
     type: DataTypes.BOOLEAN,
     allowNull: false
-  }, 
+  },
 }, {
   freezeTableName: true,
   hooks: {
@@ -115,41 +115,24 @@ const TeamRequest = sequelize.define('TeamRequest', {
   }
 });
 
-// One to one relationship between User and RegisteredUser
-User.hasOne(RegisteredUser, {
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE'
-});
+// One to one relationship between RegisteredUser and User
+User.hasOne(RegisteredUser);
 RegisteredUser.belongsTo(User);
 
-// One to many relationship between RegisteredUser and Team
-Team.hasMany(RegisteredUser, {
-  onDelete: 'SET NULL',
-  onUpdate: 'CASCADE'
-});
-// If a registered user (hacker) is deleted, the team will still exist
+// One to one relationship between RegisteredUser and Team
+Team.hasOne(RegisteredUser);
 RegisteredUser.belongsTo(Team);
 
-// One to many relationship between TeamRequest and Team 
-TeamRequest.hasMany(Team, {
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE'
-});
-RegisteredUser.belongsTo(TeamRequest);
+// Many to many relationship between RegisteredUser and TeamRequest
+Team.belongsToMany(RegisteredUser, { through: 'TeamRequest' });
 
-// One to many relationship between TeamRequests and RegisteredUsers
-TeamRequest.hasMany(RegisteredUser, {
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE'
-});
-RegisteredUser.belongsTo(TeamRequest);
+// Many to many relationship between RegisteredUser and TeamRequest
+RegisteredUser.belongsToMany(Team, { through: 'TeamRequest' });
+
 
 User.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
   return values;
-}
-RegisteredUser.prototype.validatePassword = function (password) {
-  return compareSync(password, this.password);
 }
 RegisteredUser.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
@@ -164,9 +147,11 @@ TeamRequest.prototype.toJSON = function () {
   return values;
 }
 
+
 module.exports = {
   User,
   RegisteredUser,
   Team,
   TeamRequest
 }
+
