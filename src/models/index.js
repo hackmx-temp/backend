@@ -64,6 +64,8 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   }
+}, {
+  freezeTableName: true,
 });
 
 const RegisteredUser = sequelize.define('RegisteredUser', {
@@ -101,6 +103,8 @@ const Team = sequelize.define('Team', {
     defaultValue: false,
     allowNull: false
   }
+}, {
+  freezeTableName: true,
 });
 
 const TeamRequest = sequelize.define('TeamRequest', {
@@ -113,6 +117,8 @@ const TeamRequest = sequelize.define('TeamRequest', {
     type: DataTypes.BOOLEAN,
     allowNull: false
   }
+}, {
+  freezeTableName: true,
 });
 
 // One to one relationship between RegisteredUser and User
@@ -133,6 +139,9 @@ RegisteredUser.belongsToMany(Team, { through: 'TeamRequest' });
 User.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
   return values;
+}
+RegisteredUser.prototype.validatePassword = function (password) {
+  return compareSync(password, this.password);
 }
 RegisteredUser.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());

@@ -1,16 +1,13 @@
 const BaseRepository = require("./base.repository");
+let _team = null;
 
-class TeamRepository extends BaseRepository{
-    constructor({Team}){
-        super(Team);
-        this.team = Team;
-    }
+class TeamRepository extends BaseRepository {
+  constructor({ Team }) {
+    super(Team);
+    _team = Team;
+  }
 
-    async countByCampus(campus){
-        return await this.team.count({
-            where: { campus: campus }
-        });
-    }
+  //async funcs 
 }
 
 module.exports = TeamRepository;

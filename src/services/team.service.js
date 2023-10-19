@@ -1,17 +1,14 @@
 const BaseService = require('./base.service');
+let _TeamRepository = null;
 
 class TeamService extends BaseService {
-    constructor({ TeamRepository }) {
-        super(TeamRepository);
-        this.teamRepository = TeamRepository;
-    }
+  constructor({ TeamRepository }) {
+    super(TeamRepository);
+    _TeamRepository = TeamRepository;
+  }
 
-    async countByCampus(campus) {
-        return await this.teamRepository.countByCampus(campus);
-    }
-
-    async create(team) {
-    }
+  //async funcs
 }
+
 
 module.exports = TeamService;
