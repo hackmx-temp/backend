@@ -12,3 +12,5 @@ class TeamRepository extends BaseRepository{
         });
     }
 }
+
+module.exports = TeamRepository;
