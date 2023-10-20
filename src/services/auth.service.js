@@ -1,22 +1,31 @@
 const { generateToken } = require("../helpers/jwt.helper");
-let _userService = null;
+let _userService = null,
+    _registeredUserService = null;
 
 class AuthService {
-  constructor({ UserService }) {
+  constructor({ UserService, RegisteredUserService }) {
     _userService = UserService;
+    _registeredUserService = RegisteredUserService;
   }
 
   async signUp(user) {
-    const { email } = user;
+    const { email, password } = user;
     const userExist = await _userService.getUserByEmail(email);
-    if (userExist) {
+    if (!userExist) {
       const error = new Error();
       error.status = 400;
-      error.message = "User already exist.";
+      error.message = "Email no está registrado.";
+      throw error;
+    }
+    const existingRegisteredUser = await _registeredUserService.getByUserId(userExist.id);
+    if (existingRegisteredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "Ya existe un registro con este email.";
       throw error;
     }
 
-    return await _userService.create(user);
+    return await _registeredUserService.create(password, userExist.id);
   }
 
   async logIn(user) {

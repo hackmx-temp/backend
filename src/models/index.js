@@ -69,6 +69,11 @@ const User = sequelize.define('User', {
 });
 
 const RegisteredUser = sequelize.define('RegisteredUser', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   password: {
     type: DataTypes.STRING,
     allowNull: false
@@ -102,6 +107,17 @@ const Team = sequelize.define('Team', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false
+  },
+  members: {
+    type: DataTypes.JSON, // Use JSON data type to store an array of emails
+    defaultValue: [],
+    validate: {
+      validateMembersLength() {
+        if (this.members && this.members.length > 5) {
+          throw new Error('Los grupos son de máximo 5 personas.');
+        }
+      }
+    }
   }
 }, {
   freezeTableName: true,
@@ -123,28 +139,49 @@ const TeamRequest = sequelize.define('TeamRequest', {
 
 // One to one relationship between RegisteredUser and User
 User.hasOne(RegisteredUser, {
-  foreignKey: "user_id"
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  foreignKey: {
+    name: 'user_id',
+    allowNull: false
+  }
 });
 RegisteredUser.belongsTo(User, {
-  foreignKey: "user_id"
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  foreignKey: {
+    name: 'user_id',
+    allowNull: false
+  }
 });
 
 // One to one relationship between RegisteredUser and Team
 Team.hasOne(RegisteredUser, {
-  foreignKey: "team_id"
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  foreignKey: {
+    name: 'team_id',
+    allowNull: true
+  }
 });
 RegisteredUser.belongsTo(Team, {
-  foreignKey: "team_id"
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  foreignKey: {
+    name: 'team_id',
+    allowNull: true
+  }
 });
 
 // Many to many relationship between RegisteredUser and TeamRequest
-Team.belongsToMany(RegisteredUser, { 
+Team.belongsToMany(RegisteredUser, {
   through: 'TeamRequest',
-  foreignKey: 'team_id'
+  foreignKey: 'user_id'
  });
 
 // Many to many relationship between RegisteredUser and TeamRequest
-RegisteredUser.belongsToMany(Team, { through: 'TeamRequest',
+RegisteredUser.belongsToMany(Team, {
+  through: 'TeamRequest',
   foreignKey: 'team_id'
  });
 
