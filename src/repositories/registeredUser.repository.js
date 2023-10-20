@@ -6,11 +6,31 @@ class RegisteredUserRepository extends BaseRepository {
     super(RegisteredUser);
     _registeredUser = RegisteredUser;
   }
-  
-  //async funcs 
-  async updateLeader(id, leader_status, team_id) {
-    return await super.update(id, {is_leader: leader_status, team_id: team_id});
+
+  async getByUserId(userID) {
+    return _registeredUser.findOne({
+      where: { user_id: userID },
+    });
   }
+
+  async getByTeamId(teamID) {
+    return _registeredUser.findOne({
+      where: { team_id: teamID },
+    });
+  }
+
+  async isLeader(registeredUserID) {
+    const registeredUser = await _registeredUser.get(registeredUserID);
+    return registeredUser ? registeredUser.is_leader : false;
+  }
+
+  async updateLeader(id, leader_status, team_id) {
+    return await _registeredUser.update(
+      { is_leader: leader_status, team_id: team_id },
+      { where: { id } }
+    );
+  }
+
 }
 
 module.exports = RegisteredUserRepository;
