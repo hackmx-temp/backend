@@ -21,31 +21,25 @@ class TeamRepository extends BaseRepository {
 
   async addMember(teamId, email) {
     const team = await _team.get(teamId);
-
     if (team) {
       team.members.push(email);
       await team.save();
-      return team;
-    }
 
-    return null;  // Team not found
+    }
+    return team;
   }
 
-  async removeMemberEmail(teamId, email) {
+  async removeMember(teamId, email) {
     const team = await _team.get(teamId);
-
     if (team) {
       const index = team.members.indexOf(email);
-
       if (index !== -1) {
         team.members.splice(index, 1);
         await team.save();
         return team;
       }
-      return null  // Member not found
     }
-
-    return null;  // Team not found
+    return team;
   }
 
 }
