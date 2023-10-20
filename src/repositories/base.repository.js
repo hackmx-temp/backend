@@ -20,15 +20,12 @@ class BaseRepository {
       return await ExistingEntity.update(entity);
     }
 
-
     async delete(id) {
       const ExistingEntity  = await this.get(id)
       await ExistingEntity.destroy(id);
       return true;
     }
-    async count(){
-      return await this.model.count();
-    }
-  }
 
-  module.exports = BaseRepository;
+}
+
+module.exports = BaseRepository;

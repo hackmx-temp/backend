@@ -12,6 +12,7 @@ class TeamService extends BaseService {
 
   //async funcs
 
+  
   // Create team and update user to leader
   async create (teamName, userID, isLeader){
     if(isLeader){
@@ -24,7 +25,7 @@ class TeamService extends BaseService {
     const user = await _RegisteredUserRepository.updateLeader(userID, true, team.id);
     return generateToken(user);
   }
-  
+
   // Update team name
   async updateName (teamName, teamID, isLeader){
     if(!isLeader){
@@ -48,7 +49,7 @@ class TeamService extends BaseService {
     const user = await _RegisteredUserRepository.updateLeader(userID, true, team.id);
     return generateToken(user);
   }
-  
+
 }
 
 

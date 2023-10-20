@@ -1,13 +1,20 @@
 const BaseService = require("./base.service");
-let _RegisteredUserRepository = null;
+let _RegisteredUserRepository = null
+    _userService = null;
 
 class RegisteredUserService extends BaseService {
-  constructor({ RegisteredUserRepository }) {
+  constructor({ UserService, RegisteredUserRepository }) {
     super(RegisteredUserRepository);
+    _userService = UserService;
     _RegisteredUserRepository = RegisteredUserRepository;
   }
 
-  //async funcs
+
+  
+
+  async create (password, userID){
+  }
+
 }
 
 module.exports = RegisteredUserService;
