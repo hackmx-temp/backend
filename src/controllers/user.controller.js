@@ -39,7 +39,7 @@ class UserController {
     const { body } = req;
     const campus = body.campus;
     const count = await _userService.countByCampus(campus);
-    if (count >= UserController.MAX_USERS_PER_CAMPUS) {
+    if (campus !== "Toluca" || count >= UserController.MAX_USERS_PER_CAMPUS) {
       const error = new Error();
       error.status = 400;
       error.message = `Registros para ${campus} completados.`;
