@@ -15,7 +15,7 @@ class UserService extends BaseService {
       throw error;
     }
 
-    return await this.userRepository.getUserByName(name);
+    return await _userRepository.getUserByName(name);
   }
 
   async getUserByEmail(email) {
@@ -26,7 +26,7 @@ class UserService extends BaseService {
       throw error;
     }
 
-    return await this.userRepository.getUserByEmail(email);
+    return await _userRepository.getUserByEmail(email);
   }
 
   async countByCampus(campus){
@@ -37,7 +37,7 @@ class UserService extends BaseService {
       throw error;
     }
 
-    return await this.userRepository.countByCampus(campus);
+    return await _userRepository.countByCampus(campus);
   }
 }
 

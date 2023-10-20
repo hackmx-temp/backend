@@ -7,15 +7,21 @@ class TeamRequestRepository extends BaseRepository {
     _teamRequest = TeamRequest;
   }
 
-  async getTeamRequestsByUserId(userID) {
-    return _teamRequest.findAll({
-      where: { user_id: userID },
+  async getTeamRequestsByUserIdAndTeamId(userId, teamId) {
+    return _teamRequest.findOne({
+      where: { user_id: userId, team_id: teamId },
     });
   }
 
-  async getTeamRequestsByTeamId(teamID) {
+  async getTeamRequestsByUserId(userId) {
     return _teamRequest.findAll({
-      where: { team_id: teamID },
+      where: { user_id: userId },
+    });
+  }
+
+  async getTeamRequestsByTeamId(teamId) {
+    return _teamRequest.findAll({
+      where: { team_id: teamId },
     });
   }
 

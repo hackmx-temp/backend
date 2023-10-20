@@ -7,7 +7,6 @@ class TeamRequestService extends BaseService {
     _TeamRequestRepository = TeamRequestRepository;
   }
 
-  //async funcs
 }
 
 module.exports = TeamRequestService;

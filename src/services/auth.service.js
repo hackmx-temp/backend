@@ -17,8 +17,8 @@ class AuthService {
       error.message = "Email no está registrado.";
       throw error;
     }
-    const existingRegisteredUser = await _registeredUserService.getByUserId(userExist.id);
-    if (existingRegisteredUser) {
+    const registeredUserExist = await _registeredUserService.getByUserId(userExist.id);
+    if (registeredUserExist) {
       const error = new Error();
       error.status = 400;
       error.message = "Ya existe un registro con este email.";
@@ -34,21 +34,29 @@ class AuthService {
     if (!userExist) {
       const error = new Error();
       error.status = 404;
-      error.message = "User does not exist.";
+      error.message = "Usuario no existe.";
       throw error;
     }
 
-    const validPassword = userExist.validatePassword(password);
+    const existingRegisteredUser = await _registeredUserService.getByUserId(userExist.id);
+    if (!existingRegisteredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "No te haz registrado aún.";
+      throw error;
+    }
+
+    const validPassword = existingRegisteredUser.validatePassword(password);
     if (!validPassword) {
       const error = new Error();
       error.status = 400;
-      error.message = "Invalid Password.";
+      error.message = "Contraseña Inválida.";
       throw error;
     }
 
     const token = generateToken(userExist);
 
-    return { token, user: userExist };
+    return { token, user: existingRegisteredUser };
   }
 }
 
