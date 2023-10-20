@@ -80,7 +80,8 @@ const RegisteredUser = sequelize.define('RegisteredUser', {
   },
   is_leader: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    allowNull: false,
+    defaultValue: false,
   },
 }, {
   freezeTableName: true,
@@ -131,7 +132,8 @@ const TeamRequest = sequelize.define('TeamRequest', {
   },
   status: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    allowNull: false,
+    defaultValue: false,
   }
 }, {
   freezeTableName: true,
