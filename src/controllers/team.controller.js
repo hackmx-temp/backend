@@ -33,6 +33,7 @@ class TeamController {
     const deletedTeam = await _teamService.delete(teamId);
     return res.send(deletedTeam);
   }
+
 }
 
 module.exports = TeamController;

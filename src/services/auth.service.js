@@ -25,7 +25,10 @@ class AuthService {
       throw error;
     }
 
-    return await _registeredUserService.create(password, userExist.id);
+    return await _registeredUserService.create({
+      password: password,
+      user_id: userExist.id
+    });
   }
 
   async logIn(user) {
@@ -54,9 +57,9 @@ class AuthService {
       throw error;
     }
 
-    const token = generateToken(userExist);
+    const token = generateToken(userExist, existingRegisteredUser);
 
-    return { token, user: existingRegisteredUser };
+    return { token };
   }
 }
 
