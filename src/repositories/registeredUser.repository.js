@@ -8,9 +8,7 @@ class RegisteredUserRepository extends BaseRepository {
   }
 
   async getByUserId(userID) {
-    return _registeredUser.findOne({
-      where: { user_id: userID },
-    });
+    return await super.get(userID);
   }
 
   async getByTeamId(teamID) {

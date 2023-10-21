@@ -12,7 +12,7 @@ module.exports = function({ RegisteredUserController }) {
   router.delete("", authMiddleware, RegisteredUserController.delete);
   router.delete("/deleteTeam", authMiddleware, RegisteredUserController.deleteTeam);
   router.post("/createTeam", authMiddleware, RegisteredUserController.createTeam);
-  router.post("/updateTeamName", authMiddleware, RegisteredUserController.updateTeamName);
+  router.patch("/updateTeamName", authMiddleware, RegisteredUserController.updateTeamName);
 
   return router;
 };

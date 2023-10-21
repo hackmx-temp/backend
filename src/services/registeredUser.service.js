@@ -11,28 +11,6 @@ class RegisteredUserService extends BaseService {
     _RegisteredUserRepository = RegisteredUserRepository;
   }
 
-  async create(entity) {
-    const { email } = entity;
-    const user = await _userService.getUserByEmail(email);
-    if (!user) {
-      const error = new Error();
-      error.status = 400;
-      error.message = "usuario no existe.";
-      throw error;
-    }
-    const registeredUser = await _RegisteredUserRepository.getByUserId(user.id);
-    if (registeredUser) {
-      const error = new Error();
-      error.status = 400;
-      error.message = "usuario ya registrado.";
-      throw error;
-    }
-
-    entity.id = user.id;
-
-    return await super.create(entity);
-  }
-
   async getByUserId(userID) {
     if (!userID) {
       const error = new Error();

@@ -21,7 +21,6 @@ class UserRepository extends BaseRepository {
     if (institutionalEmailPattern.test(email)) {
         // Extraer la matrícula del correo institucional
         const enrollment_id = email.split('@')[0].toUpperCase();
-
         // Buscar al usuario por matrícula
         user = await _user.findOne({
             where: { enrollment_id: enrollment_id }
