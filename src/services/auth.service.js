@@ -57,7 +57,7 @@ class AuthService {
       throw error;
     }
 
-    const token = generateToken(userExist, existingRegisteredUser);
+    const token = generateToken(userExist);
 
     return { token };
   }

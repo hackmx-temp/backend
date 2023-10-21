@@ -34,12 +34,6 @@ class RegisteredUserController {
     return res.send(deletedregisteredUser);
   }
 
-  async delete(req, res) {
-    const { registeredUserId } = req.params;
-    const deletedregisteredUser = await _registeredUserService.delete(registeredUserId);
-    return res.send(deletedregisteredUser);
-  }
-
   async createTeam(req, res) {
     const { body } = req;
     const newTeam = await _registeredUserService.createTeam(body)
@@ -47,11 +41,16 @@ class RegisteredUserController {
   }
 
   async updateTeamName(req, res) {
-    const { body } = req;;
+    const { body } = req;
     const updatedTeam= await _registeredUserService.updateTeamName(body)
     return res.send(updatedTeam)
   }
 
+  async deleteTeam(req, res) {
+    const { body } = req;
+    const deletedTeam = await _registeredUserService.deleteTeam(body)
+    return res.send(deletedTeam)
+  }
 
 }
 

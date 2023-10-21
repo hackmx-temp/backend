@@ -1,7 +1,7 @@
 const BaseService = require("./base.service");
 let _RegisteredUserRepository = null,
-    _userService = null,
-    _teamService = null;
+  _userService = null,
+  _teamService = null;
 
 class RegisteredUserService extends BaseService {
   constructor({ UserService, TeamService, RegisteredUserRepository }) {
@@ -11,6 +11,28 @@ class RegisteredUserService extends BaseService {
     _RegisteredUserRepository = RegisteredUserRepository;
   }
 
+  async create(entity) {
+    const { email } = entity;
+    const user = await _userService.getUserByEmail(email);
+    if (!user) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "usuario no existe.";
+      throw error;
+    }
+    const registeredUser = await _RegisteredUserRepository.getByUserId(user.id);
+    if (registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "usuario ya registrado.";
+      throw error;
+    }
+
+    entity.id = user.id;
+
+    return await super.create(entity);
+  }
+
   async getByUserId(userID) {
     if (!userID) {
       const error = new Error();
@@ -18,7 +40,7 @@ class RegisteredUserService extends BaseService {
       error.message = "user id debe ser enviado.";
       throw error;
     }
-    return await _RegisteredUserRepository.getByUserId(userID);
+    return await _RegisteredUserRepository.get(userID);
   }
 
   async getByTeamId(teamID) {
@@ -88,7 +110,7 @@ class RegisteredUserService extends BaseService {
     const team = await _teamService.create({
       name: team_name
     });
-    const updatedRegisteredUser = await this.updateLeader(registeredUser.id, true, team.id);
+    await this.updateLeader(registeredUser.id, true, team.id);
     const newMember = await _teamService.addMember(team.id, email);
     return newMember;
   }
@@ -117,7 +139,7 @@ class RegisteredUserService extends BaseService {
       throw error;
     }
     if (registeredUser.is_leader && registeredUser.team_id === team.id) {
-      const updatedTeam = await _teamService.update(team.id, {
+      await _teamService.update(team.id, {
         name: new_team_name
       });
       return {
@@ -131,13 +153,82 @@ class RegisteredUserService extends BaseService {
     };
   }
 
-  async deleteTeam(email, team_name) {
+  async deleteTeam(body) {
+    const { email } = body;
+    const user = await _userService.getUserByEmail(email);
+    if (!user) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "usuario no existe.";
+      throw error;
+    }
+    const registeredUser = await _RegisteredUserRepository.get(user.id);
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no estas registrado.";
+      throw error;
+    }
+    const team = await _teamService.get(registeredUser.team_id)
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no hay ningun equipo con ese nombre.";
+      throw error;
+    }
+    if (registeredUser.is_leader) {
+      await _teamService.delete(team.id);
+      return {
+        success: true,
+        message: `Equipo eliminado por líder ${email}.`
+      };
+    }
+    return {
+      success: false,
+      message: "El usuario no es líder del equipo especificado."
+    };
+  }
+  // TODO: Implementar
+  async createTeamRequest(body) {
+    /* const { email, team_name } = body;
+    const user = await _userService.getUserByEmail(email);
+    if (!user) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "usuario no existe.";
+      throw error;
+    }
+    const registeredUser = await _RegisteredUserRepository.get(user.id);
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no estas registrado.";
+      throw error;
+    }
+    const team = await _teamService.getTeamByName(team_name)
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no hay ningun equipo con ese nombre.";
+      throw error;
+    }
+    if (!registeredUser.is_leader) {
+      const teamRequest = {
+
+      }
+      await _teamRequestService.create(team.id);
+      return {
+        success: true,
+        message: `Equipo eliminado por líder ${email}.`
+      };
+    }
+    return {
+      success: false,
+      message: "El usuario no es líder del equipo especificado."
+    }; */
   }
 
-  async createTeamRequest(email, requested_team_name) {
-  }
-
-  async acceptTeamRequest(email, requested_team_name) {
+  async manageTeamRequest(email, requested_team_name) {
   }
 
 
