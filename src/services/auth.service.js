@@ -17,18 +17,23 @@ class AuthService {
       error.message = "Email no está registrado.";
       throw error;
     }
-    const registeredUserExist = await _registeredUserService.getByUserId(userExist.id);
-    if (registeredUserExist) {
-      const error = new Error();
-      error.status = 400;
-      error.message = "Ya existe un registro con este email.";
-      throw error;
+    try{
+      const registeredUserExist = await _registeredUserService.get(userExist.id);
+      if (registeredUserExist) {
+        const error = new Error();
+        error.status = 400;
+        error.message = "Ya existe un registro con este email.";
+        throw error;
+      }
+    } catch {
+      await _registeredUserService.create({
+        id: userExist.id,
+        password: password,
+        user_id: userExist.id
+      });
+      const token = generateToken(userExist);
+      return { token };
     }
-
-    return await _registeredUserService.create({
-      password: password,
-      user_id: userExist.id
-    });
   }
 
   async logIn(user) {

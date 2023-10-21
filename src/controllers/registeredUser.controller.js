@@ -36,6 +36,7 @@ class RegisteredUserController {
 
   async createTeam(req, res) {
     const { body } = req;
+    console.log(body)
     const newTeam = await _registeredUserService.createTeam(body)
     return res.send(newTeam)
   }

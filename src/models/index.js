@@ -163,7 +163,7 @@ RegisteredUser.belongsTo(User, {
 // One to one relationship between RegisteredUser and Team
 Team.hasOne(RegisteredUser, {
   onDelete: 'SET NULL',
-  onUpdate: 'CASCADE',
+  onUpdate: 'SET NULL',
   foreignKey: {
     name: 'team_id',
     allowNull: true
@@ -171,7 +171,7 @@ Team.hasOne(RegisteredUser, {
 });
 RegisteredUser.belongsTo(Team, {
   onDelete: 'SET NULL',
-  onUpdate: 'CASCADE',
+  onUpdate: 'SET NULL',
   foreignKey: {
     name: 'team_id',
     allowNull: true
