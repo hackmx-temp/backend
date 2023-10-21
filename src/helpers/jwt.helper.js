@@ -1,9 +1,8 @@
 const { sign } = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 
-module.exports.generateToken = function(user, registeredUser) {
+module.exports.generateToken = function(user) {
   return sign({
     email: user.email,
-    password: registeredUser.password
     }, JWT_SECRET, { expiresIn: "4h" });
 };

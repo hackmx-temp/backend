@@ -72,7 +72,10 @@ const RegisteredUser = sequelize.define('RegisteredUser', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    references:{
+      model: User,
+      key: 'id'
+    }
   },
   password: {
     type: DataTypes.STRING,
@@ -130,9 +133,10 @@ const TeamRequest = sequelize.define('TeamRequest', {
     autoIncrement: true
   },
   status: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.ENUM,
+    values: ['pendiente', 'aceptado', 'rechazado'],
     allowNull: false,
-    defaultValue: false,
+    defaultValue: 'pendiente',
   }
 }, {
   freezeTableName: true,
@@ -143,7 +147,7 @@ User.hasOne(RegisteredUser, {
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
   foreignKey: {
-    name: 'user_id',
+    name: 'id',
     allowNull: false
   }
 });
@@ -151,14 +155,14 @@ RegisteredUser.belongsTo(User, {
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
   foreignKey: {
-    name: 'user_id',
+    name: 'id',
     allowNull: false
   }
 });
 
 // One to one relationship between RegisteredUser and Team
 Team.hasOne(RegisteredUser, {
-  onDelete: 'CASCADE',
+  onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
   foreignKey: {
     name: 'team_id',
@@ -166,7 +170,7 @@ Team.hasOne(RegisteredUser, {
   }
 });
 RegisteredUser.belongsTo(Team, {
-  onDelete: 'CASCADE',
+  onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
   foreignKey: {
     name: 'team_id',
