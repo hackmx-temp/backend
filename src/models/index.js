@@ -111,7 +111,6 @@ const Team = sequelize.define('Team', {
   },
   members: {
     type: DataTypes.JSON, // Use JSON data type to store an array of emails
-    defaultValue: [],
     validate: {
       validateMembersLength() {
         if (this.members && this.members.length > 5) {

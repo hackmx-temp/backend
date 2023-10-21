@@ -33,6 +33,26 @@ class RegisteredUserController {
     const deletedregisteredUser = await _registeredUserService.delete(registeredUserId);
     return res.send(deletedregisteredUser);
   }
+
+  async delete(req, res) {
+    const { registeredUserId } = req.params;
+    const deletedregisteredUser = await _registeredUserService.delete(registeredUserId);
+    return res.send(deletedregisteredUser);
+  }
+
+  async createTeam(req, res) {
+    const { body } = req;
+    const newTeam = await _registeredUserService.createTeam(body)
+    return res.send(newTeam)
+  }
+
+  async updateTeamName(req, res) {
+    const { body } = req;;
+    const updatedTeam= await _registeredUserService.updateTeamName(body)
+    return res.send(updatedTeam)
+  }
+
+
 }
 
 module.exports = RegisteredUserController;

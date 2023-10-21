@@ -20,11 +20,17 @@ class TeamRepository extends BaseRepository {
   }
 
   async addMember(teamId, email) {
-    const team = await _team.get(teamId);
+    const team = await this.get(teamId);
     if (team) {
+      if (!team.members) {
+        team.members = [];
+      }
+      if (team.members.length >= 5) {
+        throw new Error('Los grupos no pueden tener más de 5 personas.');
+      }
+      
       team.members.push(email);
       await team.save();
-
     }
     return team;
   }
