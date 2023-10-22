@@ -63,7 +63,11 @@ class RegisteredUserController {
     const updatedTeamRequest = await _registeredUserService.manageTeamRequest(body)
     return res.send(updatedTeamRequest)
   }
-
+  async getTeamRequests(req, res) {
+    const { id } = req.body;
+    const newTeamRequest = await _registeredUserService.getTeamRequests(id)
+    return res.send(newTeamRequest)
+  }
 }
 
 module.exports = RegisteredUserController;
