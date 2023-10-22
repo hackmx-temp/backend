@@ -11,6 +11,17 @@ class RegisteredUserService extends BaseService {
     _RegisteredUserRepository = RegisteredUserRepository;
   }
 
+  async delete(id) {
+    const registeredUser = await super.get(id);
+    let team_id = registeredUser.team_id
+    if (registeredUser.is_leader) {
+      await _teamService.delete(team_id);
+    } else{
+      // Borrarlo de la lista de members del team
+      return await _teamService.removeMember(team_id, registeredUser.user.email);
+    }
+  }
+
   async getByUserId(userID) {
     if (!userID) {
       const error = new Error();
@@ -156,7 +167,7 @@ class RegisteredUserService extends BaseService {
     }
     if (registeredUser.is_leader) {
       await _teamService.delete(team.id);
-      return {
+        return {
         success: true,
         message: `Equipo eliminado por líder ${email}.`
       };

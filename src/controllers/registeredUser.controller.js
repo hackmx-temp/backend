@@ -29,8 +29,9 @@ class RegisteredUserController {
   }
 
   async delete(req, res) {
-    const { registeredUserId } = req.params;
-    const deletedregisteredUser = await _registeredUserService.delete(registeredUserId);
+    const { id } = req.body;
+    console.log(req.body)
+    const deletedregisteredUser = await _registeredUserService.delete(id);
     return res.send(deletedregisteredUser);
   }
 
