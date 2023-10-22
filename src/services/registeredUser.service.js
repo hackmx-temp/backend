@@ -175,7 +175,7 @@ class RegisteredUserService extends BaseService {
       message: "El usuario no es líder del equipo especificado."
     };
   }
-  // TODO: Implementar
+
   async createTeamRequest(body) {
     const { email, team_name } = body;
     const user = await _userService.getUserByEmail(email);
@@ -258,7 +258,29 @@ class RegisteredUserService extends BaseService {
     };
   }
 
-
+  // Obtiene todas las peticiones de un equipo
+  async getTeamRequests(user_id){
+    const registeredUser = await _RegisteredUserRepository.get(user_id);
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no estas registrado.";
+      throw error;
+    }
+    if(!registeredUser.is_leader){
+      const error = new Error();
+      error.status = 400;
+      error.message = "el usuario no es lider.";
+      throw error;
+    }
+    const team_id = registeredUser.team_id;
+    const requestsForTeam = await _teamRequestService.getTeamRequestsByTeamId(team_id);
+    // Vamos a embellecer la respuesta
+    let requests = []
+    requestsForTeam.forEach(request => {
+      
+    });
+  }
 }
 
 module.exports = RegisteredUserService;

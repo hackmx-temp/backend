@@ -19,6 +19,7 @@ module.exports = function({ RegisteredUserController }) {
   // Team request management routes
   router.post("/createTeamRequest", authMiddleware, RegisteredUserController.createTeamRequest);
   router.patch("/manageTeamRequest", authMiddleware, RegisteredUserController.manageTeamRequest);
+  router.get("/getTeamRequests", authMiddleware, RegisteredUserController.getTeamRequests);
 
   return router;
 };
