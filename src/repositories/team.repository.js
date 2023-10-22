@@ -20,17 +20,22 @@ class TeamRepository extends BaseRepository {
   }
 
   async addMember(teamId, email) {
-    const team = await this.get(teamId);
+    const team = await super.get(teamId);
     if (team) {
-      if (!team.members) {
-        team.members = [];
-      }
-      if (team.members.length >= 5) {
+      let members = team.getDataValue('members') ? [...team.getDataValue('members')] : []; // Clona el array existente o crea uno nuevo
+
+      if (members.length >= 5) {
         throw new Error('Los grupos no pueden tener más de 5 personas.');
       }
-      
-      team.members.push(email);
-      await team.save();
+
+      members.push(email); // Agregar el nuevo email al array
+      team.setDataValue('members', members); // Establecer el nuevo valor de members
+
+      if (members.length === 5) {
+        team.setDataValue('is_completed', true);
+      }
+
+      await team.save(); // Guardar los cambios
     }
     return team;
   }
