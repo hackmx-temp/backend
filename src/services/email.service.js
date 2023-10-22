@@ -1,36 +1,62 @@
-import { createTransport } from 'nodemailer';
-import { getEmailsFromDatabase } from './emailHelper'; 
+const nodemailer = require('nodemailer');
+const { getEmailsFromDatabase } = require('../helpers/emailHelper');
 
-async function sendEmailsToAllUsers() {
-  try {
-    const emails = await getEmailsFromDatabase(); 
-   
-    const transporter = createTransport({
-      host: '', // Reemplaza con tu servidor SMTP
-      port: 1,
-      secure: false,
-      auth: {
-        user: 'admin@hack.mx',
-        pass: 'AdaDev*3CDMX'
-      }
-    });
+const email = process.env.EMAIL_USER;
+const pass = process.env.EMAIL_PASS;
 
-    // Itera sobre los correos electrónicos y envía un correo a cada uno
-    for (const email of emails) {
+const configuration = {
+  service: 'gmail',
+  secure: false,
+  auth: {
+    user: email,
+    pass: pass
+  },
+  defaults: {
+    from: email
+  }
+};
+class EmailService {
+
+  async sendEmailToUser(userEmail, subject, content) {
+    try {
+      const transporter = nodemailer.createTransport(configuration);
       const mailOptions = {
-        from: 'admin@hack.mx',
-        to: email,
-        subject: 'Asunto del correo',
-        text: 'Contenido del correo'
+        from: email,
+        to: userEmail,
+        subject: subject,
+        text: content
       };
 
       await transporter.sendMail(mailOptions);
+      console.log('Correo enviado exitosamente');
+    } catch (error) {
+      console.error('Error al enviar el correo:', error);
     }
+  }
 
-    console.log('Correos enviados exitosamente');
-  } catch (error) {
-    console.error('Error al enviar los correos:', error);
+  async sendEmailsToAllUsers(subject, content) {
+    try {
+      const emails = await getEmailsFromDatabase();
+
+      const transporter = nodemailer.createTransport(configuration);
+
+      for (const userEmail of emails) {
+        const mailOptions = {
+          from: email,
+          to: userEmail,
+          subject: subject,
+          text: content
+        };
+
+        await transporter.sendMail(mailOptions);
+      }
+
+      console.log('Correos enviados exitosamente');
+    } catch (error) {
+      console.error('Error al enviar los correos:', error);
+    }
   }
 }
 
-export default { sendEmailsToAllUsers };
+
+module.exports = EmailService

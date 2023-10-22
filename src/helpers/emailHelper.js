@@ -1,4 +1,4 @@
-import { User } from './user.model';
+const { User } = require('../models');
 
 async function getEmailsFromDatabase() {
   try {
@@ -14,4 +14,4 @@ async function getEmailsFromDatabase() {
   }
 }
 
-export default { getEmailsFromDatabase };
+module.exports = { getEmailsFromDatabase };

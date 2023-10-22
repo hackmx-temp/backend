@@ -4,5 +4,6 @@ module.exports = {
     AuthRoutes: require("./auth.routes"),
     RegisteredUserRoutes: require("./registeredUser.routes"),
     TeamRoutes: require("./team.routes"),
-    TeamRequestRoutes: require("./teamRequest.routes")
+    TeamRequestRoutes: require("./teamRequest.routes"),
+    EmailRoutes: require("./email.routes")
 }

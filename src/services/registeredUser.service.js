@@ -1,4 +1,3 @@
-const { request } = require("express");
 const BaseService = require("./base.service");
 let _RegisteredUserRepository = null,
   _userService = null,

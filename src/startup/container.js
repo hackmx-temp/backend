@@ -11,7 +11,8 @@ const {
     AuthService,
     RegisteredUserService,
     TeamService,
-    TeamRequestService
+    TeamRequestService,
+    EmailService
  } = require("../services");
 
 // controllers
@@ -21,7 +22,8 @@ const {
     AuthController,
     RegisteredUserController,
     TeamController,
-    TeamRequestController
+    TeamRequestController,
+    EmailController
 } = require("../controllers");
 
 // routes
@@ -31,7 +33,8 @@ const {
     AuthRoutes,
     RegisteredUserRoutes,
     TeamRoutes,
-    TeamRequestRoutes
+    TeamRequestRoutes,
+    EmailRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
 
@@ -65,7 +68,8 @@ container
         AuthService: asClass(AuthService).singleton(),
         RegisteredUserService: asClass(RegisteredUserService).singleton(),
         TeamService: asClass(TeamService).singleton(),
-        TeamRequestService: asClass(TeamRequestService).singleton()
+        TeamRequestService: asClass(TeamRequestService).singleton(),
+        EmailService: asClass(EmailService).singleton()
     })
     .register({
         HomeController: asClass(HomeController.bind(HomeController)).singleton(),
@@ -74,6 +78,7 @@ container
         RegisteredUserController: asClass(RegisteredUserController.bind(RegisteredUserController)).singleton(),
         TeamController: asClass(TeamController.bind(TeamController)).singleton(),
         TeamRequestController: asClass(TeamRequestController.bind(TeamRequestController)).singleton(),
+        EmailController: asClass(EmailController.bind(EmailController)).singleton()
     })
     .register({
         HomeRoutes: asFunction(HomeRoutes).singleton(),
@@ -81,7 +86,8 @@ container
         AuthRoutes: asFunction(AuthRoutes).singleton(),
         RegisteredUserRoutes: asFunction(RegisteredUserRoutes).singleton(),
         TeamRoutes: asFunction(TeamRoutes).singleton(),
-        TeamRequestRoutes: asFunction(TeamRequestRoutes).singleton()
+        TeamRequestRoutes: asFunction(TeamRequestRoutes).singleton(),
+        EmailRoutes: asFunction(EmailRoutes).singleton()
     })
     .register({
         User: asValue(User),
