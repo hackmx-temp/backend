@@ -24,12 +24,15 @@ class TeamRequestRepository extends BaseRepository {
     });
   }
 
+  // Manejada por usuario registrado
+  /*
   async createTeamRequest(user_id, team_id) {
     return super.create({
       user_id: user_id,
       team_id: team_id,
     });
   }
+  */
 
 
 }

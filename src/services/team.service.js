@@ -1,4 +1,3 @@
-const { generateToken } = require('../helpers/jwt.helper');
 const BaseService = require('./base.service');
 let _TeamRepository = null;
 

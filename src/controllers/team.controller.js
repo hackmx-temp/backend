@@ -10,11 +10,24 @@ class TeamController {
     return res.send(team);
   }
 
+  async getByName(req, res) {
+    const { teamName } = req.params;
+    const team = await _teamService.getTeamByName(teamName);
+    return res.send(team);
+  }
+
   async getAll(req, res) {
     const teams = await _teamService.getAll();
     return res.send(teams);
   }
 
+  async getAllCompleted(req, res) {
+    const teams = await _teamService.getCompletedTeams();
+    return res.send(teams);
+  }
+
+  // Manejado por usuario registrado
+  /*
   async create(req, res) {
     const { body } = req;
     const team = await _teamService.create(body);
@@ -33,6 +46,7 @@ class TeamController {
     const deletedTeam = await _teamService.delete(teamId);
     return res.send(deletedTeam);
   }
+  */
 
 }
 

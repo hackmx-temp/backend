@@ -1,13 +1,14 @@
 const { Router } = require("express");
+const authMiddleware = require("../middlewares/auth.middleware")
 
 module.exports = function({ TeamController }) {
   const router = Router();
 
-  //router.get("", TeamController.getAll);
-  //router.get("/:teamId", TeamController.get);
-  //router.post("", TeamController.create);
-  //router.patch("/:teamId", TeamController.update);
-  //router.delete("/:teamId", TeamController.delete);
+  // Team Management Routes
+  router.get("/all", authMiddleware, TeamController.getAll);
+  router.get("/completed", authMiddleware, TeamController.getAllCompleted);
+  router.get("/id/:teamId", authMiddleware, TeamController.get);
+  router.get("/name/:teamName", authMiddleware, TeamController.getByName);
 
   return router;
 };

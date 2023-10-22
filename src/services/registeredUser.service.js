@@ -1,4 +1,3 @@
-const { request } = require("express");
 const BaseService = require("./base.service");
 let _RegisteredUserRepository = null,
   _userService = null,
@@ -278,7 +277,7 @@ class RegisteredUserService extends BaseService {
     // Vamos a embellecer la respuesta
     let requests = []
     requestsForTeam.forEach(request => {
-      
+
     });
   }
 }

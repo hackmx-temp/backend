@@ -5,8 +5,8 @@ class RegisteredUserController {
   }
 
   async get(req, res) {
-    const { registeredUserId } = req.params;
-    const registeredUser = await _registeredUserService.get(registeredUserId);
+    const { id } = body;
+    const registeredUser = await _registeredUserService.get(id);
     return res.send(registeredUser);
   }
 
@@ -15,16 +15,21 @@ class RegisteredUserController {
     return res.send(registeredUsers);
   }
 
+  /*
+  // Create manejado por auth services
   async create(req, res) {
     const { body } = req;
     const registeredUser = await _registeredUserService.create(body);
     return res.send(registeredUser);
   }
+   */
 
   async update(req, res) {
     const { body } = req;
-    const { registeredUserId } = req.params;
-    const updatedRegisteredUser = await _registeredUserService.update(registeredUserId, body);
+    const { id } = body;
+    delete body.id;
+    delete body.email;
+    const updatedRegisteredUser = await _registeredUserService.update(id, body);
     return res.send(updatedRegisteredUser);
   }
 
