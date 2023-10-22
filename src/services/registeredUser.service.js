@@ -1,3 +1,4 @@
+const { request } = require("express");
 const BaseService = require("./base.service");
 let _RegisteredUserRepository = null,
   _userService = null,
@@ -200,8 +201,7 @@ class RegisteredUserService extends BaseService {
     }
     if (!registeredUser.is_leader) {
       // La peticion debe contar con el id del usuario y el id del equipo
-      const teamRequest = await _teamRequestService.createTeamRequest(user.id, team.id);
-      console.log(teamRequest)
+      await _teamRequestService.createTeamRequest(user.id, team.id);
       return {
         success: true,
         message: `Team request de ${email} enviado al líder del equipo ${team_name}.`
@@ -215,22 +215,21 @@ class RegisteredUserService extends BaseService {
 
   async manageTeamRequest(body) {
     // El estatus es un booleano
-    const { email, status } = body;
-    const user = await _userService.getUserByEmail(email);
+    const { id, requested_email, status } = body;
+    const user = await _userService.get(id);
     if (!user) {
       const error = new Error();
       error.status = 400;
       error.message = "usuario no existe.";
       throw error;
     }
-    const registeredUser = await _RegisteredUserRepository.get(user.id);
+    const registeredUser = await _RegisteredUserRepository.get(id);
     if (!registeredUser) {
       const error = new Error();
       error.status = 400;
       error.message = "no estas registrado.";
       throw error;
     }
-    console.log(registeredUser)
     const team_id = registeredUser.team_id;
     if (!team_id) {
       const error = new Error();
@@ -239,12 +238,18 @@ class RegisteredUserService extends BaseService {
       throw error;
     }
     if (registeredUser.is_leader) {
-      // La peticion debe contar con el id del usuario y el id del equipo
-      const teamRequest = await _teamRequestService.updateTeamRequestStatus(team_id, email, status);
-      console.log(teamRequest)
+      // La peticion debe contar con el correo del usuario y el id del equipo
+      const requestUser = await _userService.getUserByEmail(requested_email);
+      await _teamRequestService.updateTeamRequestStatus(team_id, requestUser.id, requested_email, status);
+      if (status){
+        const requestRegisteredUser = await _RegisteredUserRepository.get(requestUser.id);
+        await _RegisteredUserRepository.update(requestRegisteredUser.id, {
+          team_id: team_id
+        });
+      }
       return {
         success: true,
-        message: `La peticion fue ${status} por el líder del equipo.`
+        message: `La peticion fue ${status ? "aceptada" : "rechazada"} por el líder del equipo.`
       };
     }
     return {

@@ -30,14 +30,12 @@ class RegisteredUserController {
 
   async delete(req, res) {
     const { id } = req.body;
-    console.log(req.body)
     const deletedregisteredUser = await _registeredUserService.delete(id);
     return res.send(deletedregisteredUser);
   }
 
   async createTeam(req, res) {
     const { body } = req;
-    console.log(body)
     const newTeam = await _registeredUserService.createTeam(body)
     return res.send(newTeam)
   }

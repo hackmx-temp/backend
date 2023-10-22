@@ -1,12 +1,12 @@
 const BaseService = require("./base.service");
 let _TeamRequestRepository = null;
-let _TeamRepository = null;
+let _TeamService = null;
 
 class TeamRequestService extends BaseService {
-  constructor({ TeamRequestRepository, TeamRepository }) {
+  constructor({ TeamRequestRepository, TeamService }) {
     super(TeamRequestRepository);
     _TeamRequestRepository = TeamRequestRepository;
-    _TeamRepository = TeamRepository;
+    _TeamService = TeamService;
   }
 
   async getTeamRequestsByTeamId(teamID) {
@@ -25,8 +25,8 @@ class TeamRequestService extends BaseService {
       return await _TeamRequestRepository.createTeamRequest(user_id, team_id);
     }
   }
-  async updateTeamRequestStatus(team_id, email, newStatus) {
-    const teamRequest = await _TeamRequestRepository.getTeamRequestsByTeamId(team_id);
+  async updateTeamRequestStatus(team_id, user_id, email_user, newStatus) {
+    const teamRequest = await _TeamRequestRepository.getTeamRequestsByUserIdAndTeamId(user_id, team_id);
     const id = teamRequest.id;
     // What happens if the leader rejects the request?
     // The request is deleted from the database
@@ -37,7 +37,7 @@ class TeamRequestService extends BaseService {
     // The request is deleted from the database
     // The user is added to the team
     else {
-      await _TeamRepository.addMember(team_id, email);
+      await _TeamService.addMember(team_id, email_user);
       return await _TeamRequestRepository.delete(id);
     }
   }
