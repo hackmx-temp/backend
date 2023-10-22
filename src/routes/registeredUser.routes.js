@@ -10,9 +10,12 @@ module.exports = function({ RegisteredUserController }) {
   //router.delete("/:registeredUserId", RegisteredUserController.delete);
   // router.post("", RegisteredUserController.create);
   router.delete("", authMiddleware, RegisteredUserController.delete);
+
+  // Team management routes
   router.delete("/deleteTeam", authMiddleware, RegisteredUserController.deleteTeam);
   router.post("/createTeam", authMiddleware, RegisteredUserController.createTeam);
   router.patch("/updateTeamName", authMiddleware, RegisteredUserController.updateTeamName);
+  
 
   return router;
 };
