@@ -1,6 +1,5 @@
 const BaseRepository = require("./base.repository");
 let _teamRequest = null;
-
 class TeamRequestRepository extends BaseRepository {
   constructor({ TeamRequest }) {
     super(TeamRequest);
@@ -26,19 +25,12 @@ class TeamRequestRepository extends BaseRepository {
   }
 
   async createTeamRequest(user_id, team_id) {
-    return _teamRequest.create({
-      user_id,
-      team_id,
-      status: false,
+    return super.create({
+      user_id: user_id,
+      team_id: team_id,
     });
   }
 
-  async updateTeamRequestStatus(id, newStatus) {
-    return TeamRequest.update(
-      { status: newStatus },
-      { where: { id } }
-    );
-  }
 
 }
 

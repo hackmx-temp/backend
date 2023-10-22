@@ -73,7 +73,7 @@ const RegisteredUser = sequelize.define('RegisteredUser', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     references:{
-      model: User,
+      model: 'User',
       key: 'id'
     }
   },
@@ -132,12 +132,12 @@ const TeamRequest = sequelize.define('TeamRequest', {
     primaryKey: true,
     autoIncrement: true
   },
-  status: {
+  /* status: {
     type: DataTypes.ENUM,
     values: ['pendiente', 'aceptado', 'rechazado'],
     allowNull: false,
     defaultValue: 'pendiente',
-  }
+  } */
 }, {
   freezeTableName: true,
 });
@@ -181,13 +181,13 @@ RegisteredUser.belongsTo(Team, {
 // Many to many relationship between RegisteredUser and TeamRequest
 Team.belongsToMany(RegisteredUser, {
   through: 'TeamRequest',
-  foreignKey: 'user_id'
+  foreignKey: 'team_id'
  });
 
 // Many to many relationship between RegisteredUser and TeamRequest
 RegisteredUser.belongsToMany(Team, {
   through: 'TeamRequest',
-  foreignKey: 'team_id'
+  foreignKey: 'user_id'
  });
 
 

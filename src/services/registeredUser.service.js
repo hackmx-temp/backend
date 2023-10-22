@@ -1,14 +1,16 @@
 const BaseService = require("./base.service");
 let _RegisteredUserRepository = null,
   _userService = null,
-  _teamService = null;
+  _teamService = null,
+  _teamRequestService = null;
 
 class RegisteredUserService extends BaseService {
-  constructor({ UserService, TeamService, RegisteredUserRepository }) {
+  constructor({ UserService, TeamService, RegisteredUserRepository, TeamRequestService }) {
     super(RegisteredUserRepository);
     _userService = UserService;
     _teamService = TeamService;
     _RegisteredUserRepository = RegisteredUserRepository;
+    _teamRequestService = TeamRequestService;
   }
 
   async delete(id) {
@@ -63,12 +65,6 @@ class RegisteredUserService extends BaseService {
       const error = new Error();
       error.status = 400;
       error.message = "leader status debe ser enviado.";
-      throw error;
-    }
-    if (!team_id) {
-      const error = new Error();
-      error.status = 400;
-      error.message = "team id debe ser enviado.";
       throw error;
     }
     return await _RegisteredUserRepository.updateLeader(id, leader_status, team_id);
@@ -166,6 +162,7 @@ class RegisteredUserService extends BaseService {
       throw error;
     }
     if (registeredUser.is_leader) {
+      await this.updateLeader(registeredUser.id, false, null);
       await _teamService.delete(team.id);
         return {
         success: true,
@@ -179,7 +176,7 @@ class RegisteredUserService extends BaseService {
   }
   // TODO: Implementar
   async createTeamRequest(body) {
-    /* const { email, team_name } = body;
+    const { email, team_name } = body;
     const user = await _userService.getUserByEmail(email);
     if (!user) {
       const error = new Error();
@@ -195,29 +192,65 @@ class RegisteredUserService extends BaseService {
       throw error;
     }
     const team = await _teamService.getTeamByName(team_name)
-    if (!registeredUser) {
+    if (!team) {
       const error = new Error();
       error.status = 400;
       error.message = "no hay ningun equipo con ese nombre.";
       throw error;
     }
     if (!registeredUser.is_leader) {
-      const teamRequest = {
-
-      }
-      await _teamRequestService.create(team.id);
+      // La peticion debe contar con el id del usuario y el id del equipo
+      const teamRequest = await _teamRequestService.createTeamRequest(user.id, team.id);
+      console.log(teamRequest)
       return {
         success: true,
-        message: `Equipo eliminado por líder ${email}.`
+        message: `Team request de ${email} enviado al líder del equipo ${team_name}.`
       };
     }
     return {
       success: false,
-      message: "El usuario no es líder del equipo especificado."
-    }; */
+      message: "El usuario es líder y no puede hacer peticiones."
+    };
   }
 
-  async manageTeamRequest(email, requested_team_name) {
+  async manageTeamRequest(body) {
+    // El estatus es un booleano
+    const { email, status } = body;
+    const user = await _userService.getUserByEmail(email);
+    if (!user) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "usuario no existe.";
+      throw error;
+    }
+    const registeredUser = await _RegisteredUserRepository.get(user.id);
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no estas registrado.";
+      throw error;
+    }
+    console.log(registeredUser)
+    const team_id = registeredUser.team_id;
+    if (!team_id) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "el usuario no tiene equipo.";
+      throw error;
+    }
+    if (registeredUser.is_leader) {
+      // La peticion debe contar con el id del usuario y el id del equipo
+      const teamRequest = await _teamRequestService.updateTeamRequestStatus(team_id, email, status);
+      console.log(teamRequest)
+      return {
+        success: true,
+        message: `La peticion fue ${status} por el líder del equipo.`
+      };
+    }
+    return {
+      success: false,
+      message: "El usuario no es el líder del equipo."
+    };
   }
 
 

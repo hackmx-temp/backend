@@ -54,6 +54,18 @@ class RegisteredUserController {
     return res.send(deletedTeam)
   }
 
+  async createTeamRequest(req, res) {
+    const { body } = req;
+    const newTeamRequest = await _registeredUserService.createTeamRequest(body)
+    return res.send(newTeamRequest)
+  }
+
+  async manageTeamRequest(req, res) {
+    const { body } = req;
+    const updatedTeamRequest = await _registeredUserService.manageTeamRequest(body)
+    return res.send(updatedTeamRequest)
+  }
+
 }
 
 module.exports = RegisteredUserController;
