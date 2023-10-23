@@ -95,7 +95,7 @@ class RegisteredUserService extends BaseService {
     const team = await _teamService.create({
       name: team_name
     });
-    await this.updateLeader(registeredUser.id, true, team.id);
+    await _RegisteredUserRepository.updateLeader(registeredUser.id, true, team.id);
     const newMember = await _teamService.addMember(team.id, email);
     return newMember;
   }
@@ -162,7 +162,7 @@ class RegisteredUserService extends BaseService {
       throw error;
     }
     if (registeredUser.is_leader) {
-      await this.updateLeader(registeredUser.id, false, null);
+      await _RegisteredUserRepository.updateLeader(registeredUser.id, false, null);
       await _teamService.delete(team.id);
         return {
         success: true,
@@ -257,7 +257,8 @@ class RegisteredUserService extends BaseService {
     };
   }
 
-  // Obtiene todas las peticiones de un equipo
+  // Obtiene todas las peticiones de un equipo si es lider,
+  // si no obtiene todas sus peticiones hechas
   async getTeamRequests(user_id){
     const registeredUser = await _RegisteredUserRepository.get(user_id);
     if (!registeredUser) {
@@ -266,20 +267,40 @@ class RegisteredUserService extends BaseService {
       error.message = "no estas registrado.";
       throw error;
     }
-    if(!registeredUser.is_leader){
-      const error = new Error();
-      error.status = 400;
-      error.message = "el usuario no es lider.";
-      throw error;
-    }
-    const team_id = registeredUser.team_id;
-    const requestsForTeam = await _teamRequestService.getTeamRequestsByTeamId(team_id);
-    // Vamos a embellecer la respuesta
-    let requests = []
-    requestsForTeam.forEach(request => {
 
-    });
+    if(registeredUser.is_leader){
+      const team_id = registeredUser.team_id;
+      const requestsForTeam = await _teamRequestService.getTeamRequestsByTeamId(team_id);
+      const formattedRequests = await Promise.all(
+        requestsForTeam.map(async (request) => {
+          const user = await _userService.get(request.user_id);
+          const team = await _teamService.get(request.team_id);
+          return {
+            name: user.name,
+            email: user.email,
+            // team: team.name,
+          };
+        })
+      );
+      return formattedRequests
+    }
+
+    const requestsByUser = await _teamRequestService.getTeamRequestsByUserId(registeredUser.id);
+    const formattedRequests = await Promise.all(
+      requestsByUser.map(async (request) => {
+        const user = await _userService.get(request.user_id); // Replace _userService with the actual user service
+        const team = await _teamService.get(request.team_id); // Replace _teamService with the actual team service
+
+        return {
+          name: user.name, // Replace with the actual property name for user's name
+          email: user.email, // Replace with the actual property name for user's email
+          team: team.name, // Replace with the actual property name for the team's name
+        };
+      })
+    );
+    return formattedRequests;
   }
+
 }
 
 module.exports = RegisteredUserService;

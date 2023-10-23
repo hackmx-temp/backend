@@ -132,12 +132,6 @@ const TeamRequest = sequelize.define('TeamRequest', {
     primaryKey: true,
     autoIncrement: true
   },
-  /* status: {
-    type: DataTypes.ENUM,
-    values: ['pendiente', 'aceptado', 'rechazado'],
-    allowNull: false,
-    defaultValue: 'pendiente',
-  } */
 }, {
   freezeTableName: true,
 });
