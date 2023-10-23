@@ -54,7 +54,7 @@ class TeamRequestService extends BaseService {
     }
   }
 
-  async updateTeamRequestStatus(team_id, user_id, email_user, newStatus) {
+  async updateTeamRequestStatus(team_id, user_id, name_user, email_user, newStatus) {
     const teamRequest = await _TeamRequestRepository.getTeamRequestsByUserIdAndTeamId(user_id, team_id);
     const id = teamRequest.id;
     // What happens if the leader rejects the request?
@@ -66,7 +66,7 @@ class TeamRequestService extends BaseService {
     // The request is deleted from the database
     // The user is added to the team
     else {
-      await _TeamService.addMember(team_id, email_user);
+      await _TeamService.addMember(team_id, name_user, email_user);
       return await _TeamRequestRepository.delete(id);
     }
   }

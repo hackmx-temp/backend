@@ -239,7 +239,7 @@ class RegisteredUserService extends BaseService {
     if (registeredUser.is_leader) {
       // La peticion debe contar con el correo del usuario y el id del equipo
       const requestUser = await _userService.getUserByEmail(requested_email);
-      await _teamRequestService.updateTeamRequestStatus(team_id, requestUser.id, requested_email, status);
+      await _teamRequestService.updateTeamRequestStatus(team_id, requestUser.id, requestUser.name, requested_email, status);
       if (status){
         const requestRegisteredUser = await _RegisteredUserRepository.get(requestUser.id);
         await _RegisteredUserRepository.update(requestRegisteredUser.id, {
@@ -288,13 +288,13 @@ class RegisteredUserService extends BaseService {
     const requestsByUser = await _teamRequestService.getTeamRequestsByUserId(registeredUser.id);
     const formattedRequests = await Promise.all(
       requestsByUser.map(async (request) => {
-        const user = await _userService.get(request.user_id); // Replace _userService with the actual user service
-        const team = await _teamService.get(request.team_id); // Replace _teamService with the actual team service
+        const user = await _userService.get(request.user_id);
+        const team = await _teamService.get(request.team_id); 
 
         return {
-          name: user.name, // Replace with the actual property name for user's name
-          email: user.email, // Replace with the actual property name for user's email
-          team: team.name, // Replace with the actual property name for the team's name
+          name: user.name,
+          email: user.email,
+          team: team.name,
         };
       })
     );
