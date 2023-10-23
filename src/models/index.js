@@ -92,6 +92,10 @@ const RegisteredUser = sequelize.define('RegisteredUser', {
     beforeCreate: (registeredUser) => {
       const salt = genSaltSync();
       registeredUser.password = hashSync(registeredUser.password, salt);
+    },
+    beforeUpdate: (registeredUser) => {
+      const salt = genSaltSync();
+      registeredUser.password = hashSync(registeredUser.password, salt);
     }
   }
 });
@@ -142,6 +146,25 @@ const TeamRequest = sequelize.define('TeamRequest', {
   freezeTableName: true,
 });
 
+const PasswordResetToken = sequelize.define('PasswordResetToken', {
+  token: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  expires_in: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  registered_user_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'RegisteredUser',
+      key: 'id'
+    },
+    allowNull: false
+  }
+}, {freezeTableName: true});
+
 // One to one relationship between RegisteredUser and User
 User.hasOne(RegisteredUser, {
   onDelete: 'CASCADE',
@@ -190,6 +213,22 @@ RegisteredUser.belongsToMany(Team, {
   foreignKey: 'user_id'
  });
 
+// One to one relationship between RegisteredUser and PasswordResetToken
+PasswordResetToken.belongsTo(RegisteredUser, {
+  onDelete: 'CASCADE',
+  foreignKey: {
+    name: 'registered_user_id',
+    allowNull: false
+  }
+});
+RegisteredUser.hasOne(PasswordResetToken, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  foreignKey: {
+    name: 'registered_user_id',
+    allowNull: false
+  }
+});
 
 User.prototype.toJSON = function () {
   var values = Object.assign({}, this.get());
@@ -216,6 +255,7 @@ module.exports = {
   User,
   RegisteredUser,
   Team,
-  TeamRequest
+  TeamRequest,
+  PasswordResetToken
 }
 

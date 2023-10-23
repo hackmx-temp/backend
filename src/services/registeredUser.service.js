@@ -44,6 +44,23 @@ class RegisteredUserService extends BaseService {
     return await _RegisteredUserRepository.getByTeamId(teamID);
   }
 
+  async getByEmail(email){
+    if (!email) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "email debe ser enviado.";
+      throw error;
+    }
+    const user = await _userService.getUserByEmail(email);
+    if (!user) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "usuario no existe.";
+      throw error;
+    }
+    return await _RegisteredUserRepository.getByUserId(user.id);
+  }
+
   async isLeader(registeredUserID) {
     if (!registeredUserID) {
       const error = new Error();

@@ -13,7 +13,12 @@ const configuration = {
     pass: pass
   },
 };
+
+let _registeredUserService = null;
 class EmailService {
+  constructor({ RegisteredUserService }) {
+    _registeredUserService = RegisteredUserService;
+  }
   async sendEmailToUser(userEmail, subject, content) {
     try {
       const transporter = nodemailer.createTransport(configuration, { from: email });
@@ -34,11 +39,9 @@ class EmailService {
   }
 
   async resetPasswordEmail(userEmail, url) {
-    try{
-      return await this.genericSendEmailToUser(email, userEmail, 'Recuperar contraseña', 'resetPassword', { resetLink: url, email: email });
-    } catch (error) {
-      throw error;
-    }
+    const existingUser = await _registeredUserService.getByEmail(userEmail);
+    
+    return await this.genericSendEmailToUser(email, userEmail, 'Recuperar contraseña', 'resetPassword', { resetLink: url, email: email });
   }
 
   async genericSendEmailToUser(fromEmail, toEmail, subject, templateName, templateParams) {
