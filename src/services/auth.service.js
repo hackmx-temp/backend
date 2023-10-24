@@ -1,11 +1,13 @@
 const { generateToken } = require("../helpers/jwt.helper");
 let _userService = null,
-    _registeredUserService = null;
+    _registeredUserService = null,
+    _passwordResetTokenService = null;
 
 class AuthService {
-  constructor({ UserService, RegisteredUserService }) {
+  constructor({ UserService, RegisteredUserService, PasswordResetTokenService }) {
     _userService = UserService;
     _registeredUserService = RegisteredUserService;
+    _passwordResetTokenService = PasswordResetTokenService;
   }
 
   async signUp(user) {
@@ -65,6 +67,20 @@ class AuthService {
     const token = generateToken(userExist);
 
     return { token };
+  }
+
+  async resetPassword(user) {
+    const { token, password } = user;
+    const existingToken = await _passwordResetTokenService.validateToken(token);
+    // Al usar la misma PK, no es necesario buscar el usuario por el id
+    const registeredUserExist = await _userService.get(existingToken.user_id);
+    if (!registeredUserExist) {
+      const error = new Error();
+      error.status = 404;
+      error.message = "Usuario no existe.";
+      throw error;
+    }
+    return await _registeredUserService.update(registeredUserExist.id, { password: password });
   }
 }
 

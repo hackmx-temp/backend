@@ -153,9 +153,9 @@ const PasswordResetToken = sequelize.define('PasswordResetToken', {
   },
   expires_in: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: false,
   },
-  registered_user_id: {
+  user_id: {
     type: DataTypes.INTEGER,
     references: {
       model: 'RegisteredUser',
@@ -217,15 +217,14 @@ RegisteredUser.belongsToMany(Team, {
 PasswordResetToken.belongsTo(RegisteredUser, {
   onDelete: 'CASCADE',
   foreignKey: {
-    name: 'registered_user_id',
+    name: 'user_id',
     allowNull: false
   }
 });
 RegisteredUser.hasOne(PasswordResetToken, {
   onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
   foreignKey: {
-    name: 'registered_user_id',
+    name: 'user_id',
     allowNull: false
   }
 });
@@ -250,6 +249,10 @@ TeamRequest.prototype.toJSON = function () {
   return values;
 }
 
+PasswordResetToken.prototype.toJSON = function () {
+  var values = Object.assign({}, this.get());
+  return values;
+}
 
 module.exports = {
   User,

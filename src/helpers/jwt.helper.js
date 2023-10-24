@@ -8,10 +8,4 @@ const generateToken = function(user) {
     }, JWT_SECRET, { expiresIn: "4h" });
 };
 
-const generateRecoverToken = function(user) {
-  return sign({
-    email: user.email,
-    }, JWT_SECRET, { expiresIn: "1h" });
-};
-
-module.exports = { generateToken, generateRecoverToken };
+module.exports = generateToken;

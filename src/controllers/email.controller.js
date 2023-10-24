@@ -17,7 +17,8 @@ class EmailController {
     async resetPassword(req, res) {
         const { body } = req;
         const { email } = body;
-        const response = await _emailService.resetPasswordEmail(email, "http://localhost:3000/resetPassword");
+        const frontURL = 'http://localhost:3000/resetPassword'
+        const response = await _emailService.resetPasswordEmail(email, frontURL);
         res.send(response);
     }
 }

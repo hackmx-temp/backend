@@ -5,5 +5,6 @@ module.exports = {
     RegisteredUserController: require("./registeredUser.controller"),
     TeamController: require("./team.controller"),
     TeamRequestController: require("./teamRequest.controller"),
-    EmailController: require("./email.controller")
+    EmailController: require("./email.controller"),
+    PasswordResetTokenController: require("./passwordResetToken.controller")
 }

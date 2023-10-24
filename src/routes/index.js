@@ -15,7 +15,8 @@ module.exports = function({
     RegisteredUserRoutes,
     TeamRoutes,
     TeamRequestRoutes,
-    EmailRoutes
+    EmailRoutes,
+    PasswordResetTokenRoutes
 }){
     const router = express.Router()
     const apiRoutes = express.Router();
@@ -33,6 +34,7 @@ module.exports = function({
     apiRoutes.use("/team", TeamRoutes);
     apiRoutes.use("/teamRequest", TeamRequestRoutes);
     apiRoutes.use("/email", EmailRoutes);
+    apiRoutes.use("/passwordResetToken", PasswordResetTokenRoutes);
 
     router.use("/hackMX", apiRoutes);
     router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));

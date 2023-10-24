@@ -5,5 +5,6 @@ module.exports = {
     RegisteredUserService: require("./registeredUser.service"),
     TeamService: require("./team.service"),
     TeamRequestService: require("./teamRequest.service"),
-    EmailService: require("./email.service")
+    EmailService: require("./email.service"),
+    PasswordResetTokenService: require("./passwordResetToken.service"),
 }

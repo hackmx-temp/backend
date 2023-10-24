@@ -12,7 +12,8 @@ const {
     RegisteredUserService,
     TeamService,
     TeamRequestService,
-    EmailService
+    EmailService,
+    PasswordResetTokenService
  } = require("../services");
 
 // controllers
@@ -23,7 +24,8 @@ const {
     RegisteredUserController,
     TeamController,
     TeamRequestController,
-    EmailController
+    EmailController,
+    PasswordResetTokenController
 } = require("../controllers");
 
 // routes
@@ -34,7 +36,8 @@ const {
     RegisteredUserRoutes,
     TeamRoutes,
     TeamRequestRoutes,
-    EmailRoutes
+    EmailRoutes,
+    PasswordResetTokenRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
 
@@ -43,7 +46,8 @@ const {
     User,
     RegisteredUser,
     Team,
-    TeamRequest
+    TeamRequest,
+    PasswordResetToken
 } = require("../models")
 
 // repositories
@@ -51,7 +55,8 @@ const {
     UserRepository,
     RegisteredUserRepository,
     TeamRepository,
-    TeamRequestRepository
+    TeamRequestRepository,
+    PasswordResetTokenRepository
 } = require("../repositories")
 
 const container = createContainer();
@@ -69,7 +74,8 @@ container
         RegisteredUserService: asClass(RegisteredUserService).singleton(),
         TeamService: asClass(TeamService).singleton(),
         TeamRequestService: asClass(TeamRequestService).singleton(),
-        EmailService: asClass(EmailService).singleton()
+        EmailService: asClass(EmailService).singleton(),
+        PasswordResetTokenService: asClass(PasswordResetTokenService).singleton()
     })
     .register({
         HomeController: asClass(HomeController.bind(HomeController)).singleton(),
@@ -78,7 +84,8 @@ container
         RegisteredUserController: asClass(RegisteredUserController.bind(RegisteredUserController)).singleton(),
         TeamController: asClass(TeamController.bind(TeamController)).singleton(),
         TeamRequestController: asClass(TeamRequestController.bind(TeamRequestController)).singleton(),
-        EmailController: asClass(EmailController.bind(EmailController)).singleton()
+        EmailController: asClass(EmailController.bind(EmailController)).singleton(),
+        PasswordResetTokenController: asClass(PasswordResetTokenController.bind(PasswordResetTokenController)).singleton()
     })
     .register({
         HomeRoutes: asFunction(HomeRoutes).singleton(),
@@ -87,19 +94,22 @@ container
         RegisteredUserRoutes: asFunction(RegisteredUserRoutes).singleton(),
         TeamRoutes: asFunction(TeamRoutes).singleton(),
         TeamRequestRoutes: asFunction(TeamRequestRoutes).singleton(),
-        EmailRoutes: asFunction(EmailRoutes).singleton()
+        EmailRoutes: asFunction(EmailRoutes).singleton(),
+        PasswordResetTokenRoutes: asFunction(PasswordResetTokenRoutes).singleton()
     })
     .register({
         User: asValue(User),
         RegisteredUser: asValue(RegisteredUser),
         Team: asValue(Team),
-        TeamRequest: asValue(TeamRequest)
+        TeamRequest: asValue(TeamRequest),
+        PasswordResetToken: asValue(PasswordResetToken)
     })
     .register({
         UserRepository: asClass(UserRepository).singleton(),
         RegisteredUserRepository: asClass(RegisteredUserRepository).singleton(),
         TeamRepository: asClass(TeamRepository).singleton(),
-        TeamRequestRepository: asClass(TeamRequestRepository).singleton()
+        TeamRequestRepository: asClass(TeamRequestRepository).singleton(),
+        PasswordResetTokenRepository: asClass(PasswordResetTokenRepository).singleton()
     });
 
 module.exports = container;
