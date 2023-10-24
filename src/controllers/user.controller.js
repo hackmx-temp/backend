@@ -1,4 +1,4 @@
-let _userService = require("../services/user.service");
+let _userService = null;
 class UserController {
   constructor({ UserService }) {
     _userService = UserService;
@@ -35,7 +35,7 @@ class UserController {
     return res.send(deletedUser);
   }
 
-  async create(req, res){
+  async validCreate(req, res){
     const { body } = req;
     const campus = body.campus;
     const count = await _userService.countByCampus(campus);

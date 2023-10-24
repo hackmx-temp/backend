@@ -1,0 +1,14 @@
+{
+    "name": "test",
+    "last_name": "test",
+    "email": "email@email.com",
+    "phone_number": "1234567890",
+    "campus": "CCM",
+    "career": "ITC",
+    "semester": 5,
+    "bus_required": true,
+    "enrollment_id": "A00000000",
+    "gender": "No binario",
+    "allergies": "None",
+    "medical_conditions": "None"
+}

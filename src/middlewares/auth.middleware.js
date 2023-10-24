@@ -17,8 +17,8 @@ module.exports = function(req, res, next) {
       error.status = 401;
       throw error;
     }
-
-    req.user = decodedToken.user;
-    next();
+    req.body.id = decodedToken.id;
+    req.body.email = decodedToken.email;
+    next(); 
   });
 };

@@ -8,7 +8,16 @@ const swaggerUI = require("swagger-ui-express");
 const { SWAGGER_PATH } = require("../config");
 const swaggerDocument = require(SWAGGER_PATH);
 
-module.exports = function({HomeRoutes, UserRoutes, AuthRoutes}){
+module.exports = function({
+    HomeRoutes,
+    UserRoutes,
+    AuthRoutes,
+    RegisteredUserRoutes,
+    TeamRoutes,
+    TeamRequestRoutes,
+    EmailRoutes,
+    PasswordResetTokenRoutes
+}){
     const router = express.Router()
     const apiRoutes = express.Router();
 
@@ -21,6 +30,11 @@ module.exports = function({HomeRoutes, UserRoutes, AuthRoutes}){
     apiRoutes.use("/home", HomeRoutes);
     apiRoutes.use("/user", UserRoutes);
     apiRoutes.use("/auth", AuthRoutes);
+    apiRoutes.use("/registeredUser", RegisteredUserRoutes);
+    apiRoutes.use("/team", TeamRoutes);
+    apiRoutes.use("/teamRequest", TeamRequestRoutes);
+    apiRoutes.use("/email", EmailRoutes);
+    apiRoutes.use("/passwordResetToken", PasswordResetTokenRoutes);
 
     router.use("/hackMX", apiRoutes);
     router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
