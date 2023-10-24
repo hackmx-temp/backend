@@ -22,6 +22,12 @@ class AuthController {
     const reset = await _authService.resetPassword(body);
     return res.send(reset);
   }
+
+  async verifyJWT(req, res) {
+    const { body } = req;
+    const verified = _authService.verifyJWT(body);
+    return res.send(verified);
+  }
 }
 
 module.exports = AuthController;

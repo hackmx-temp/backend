@@ -14,7 +14,7 @@ module.exports = function({ RegisteredUserController }) {
   //body { "team_name": "Los teamos" }
   router.post("/createTeam", authMiddleware, RegisteredUserController.createTeam);
   //sin body
-  router.get("/getTeam", authMiddleware, RegisteredUserController.getTeamByLeader);
+  router.get("/getTeam", authMiddleware, RegisteredUserController.getTeamByUserId);
   //body {"requested_email": "prueba@email.com"}
   router.post("/addMember", authMiddleware, RegisteredUserController.addMember);
   router.post("/removeMember", authMiddleware, RegisteredUserController.removeMember);

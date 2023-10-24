@@ -46,7 +46,7 @@ class TeamRepository extends BaseRepository {
     return team;
   }
 
-  async removeMember(teamId, name, email, campus, enrollment_id, semester) {
+  async removeMember(teamId, email) {
     const team = await super.get(teamId);
     if (team) {
       const members = team.getDataValue('members');

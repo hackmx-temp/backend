@@ -16,10 +16,12 @@ const configuration = {
 
 let _registeredUserService = null;
 let _passwordResetTokenService = null;
+let _userService = null;
 class EmailService {
-  constructor({ RegisteredUserService, PasswordResetTokenService }) {
+  constructor({ RegisteredUserService, PasswordResetTokenService, UserService }) {
     _registeredUserService = RegisteredUserService;
     _passwordResetTokenService = PasswordResetTokenService;
+    _userService = UserService;
   }
   async sendEmailToUser(userEmail, subject, content) {
     try {
@@ -41,16 +43,15 @@ class EmailService {
   }
 
   async resetPasswordEmail(userEmail, url) {
-    try {
-      const existingUser = await _registeredUserService.getByEmail(userEmail);
-      const token = await _passwordResetTokenService.createForUser(existingUser.id);
-      // Se declara como parametro en la url el token para que el usuario pueda cambiar su contraseña
-      url += `?token=${token.token}`
+    try{
+      const existingUser = await _userService.getUserByEmail(userEmail);
+      const existingRegisteredUser = await _registeredUserService.get(existingUser.id);
+      const token = await _passwordResetTokenService.createForUser(existingRegisteredUser.id);
+      url += `/${token.token}`
       return await this.genericSendEmailToUser(email, userEmail, 'Recuperar contraseña', 'resetPassword', { resetLink: url, email: email });
-    } catch { // Para proteger la integridad de los usuarios, no mencionamos que no se encontró un usuario
+    } catch { // Para proteger los datos, se manda con un mensaje de éxito
       return {
         message: 'Correo enviado exitosamente',
-        status: 200
       }
     }
   }

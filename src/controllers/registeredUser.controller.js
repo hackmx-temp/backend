@@ -14,6 +14,7 @@ class RegisteredUserController {
     const registeredUsers = await _registeredUserService.getAll();
     return res.send(registeredUsers);
   }
+  
 
   /*
   // Create manejado por auth services
@@ -57,10 +58,10 @@ class RegisteredUserController {
     return res.send(response)
   }
 
-  async getTeamByLeader(req, res) {
+  async getTeamByUserId(req, res) {
     const { body } = req;
-    const team = await _registeredUserService.getTeamByLeader(body)
-    return res.send(team)
+    const team = await _registeredUserService.getTeamByUserId(body);
+    return res.send(team);
   }
 
   async updateTeamName(req, res) {

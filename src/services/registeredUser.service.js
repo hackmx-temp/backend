@@ -140,7 +140,7 @@ class RegisteredUserService extends BaseService {
 
     if (registeredUser.is_leader) {
       await _RegisteredUserRepository.updateMember(possible_user.id, false, registeredUser.team_id);
-      await _teamService.addMember({
+      const teamUpdated = await _teamService.addMember({
         teamId : registeredUser.team_id,
         name : possible_user.name,
         email : possible_user.email,
@@ -148,10 +148,7 @@ class RegisteredUserService extends BaseService {
         enrollment_id : possible_user.enrollment_id,
         semester : possible_user.semester
       })
-      return {
-        success: true,
-        message: "El usuario fue agregado con éxito."
-      };
+      return teamUpdated.members;
     }
     return {
       success: false,
@@ -185,14 +182,16 @@ class RegisteredUserService extends BaseService {
     }
 
     if (registeredUser.is_leader) {
+      if (possible_user.id === user.id){
+        const error = new Error();
+        error.status = 400;
+        error.message = "No puedes eliminarte a ti mismo, usa la opcion de eliminar equipo.";
+        throw error;
+      }
       await _RegisteredUserRepository.updateMember(possible_user.id, false, null);
       await _teamService.removeMember({
         teamId : registeredUser.team_id,
-        name : possible_user.name,
         email : possible_user.email,
-        campus : possible_user.campus,
-        enrollment_id : possible_user.enrollment_id,
-        semester : possible_user.semester
       })
       return {
         success: true,
@@ -208,22 +207,15 @@ class RegisteredUserService extends BaseService {
 
 
   async updateTeamName(body) {
-    const { email, team_name, new_team_name } = body;
-    const user = await _userService.getUserByEmail(email);
-    if (!user) {
-      const error = new Error();
-      error.status = 400;
-      error.message = "usuario no existe.";
-      throw error;
-    }
-    const registeredUser = await _RegisteredUserRepository.getByUserId(user.id);
+    const { id, new_team_name } = body;
+    const registeredUser = await _RegisteredUserRepository.getByUserId(id);
     if (!registeredUser) {
       const error = new Error();
       error.status = 400;
       error.message = "no estas registrado.";
       throw error;
     }
-    const team = await _teamService.getTeamByName(team_name)
+    const team = await _teamService.get(registeredUser.team_id);
     if (!registeredUser) {
       const error = new Error();
       error.status = 400;
@@ -307,7 +299,14 @@ class RegisteredUserService extends BaseService {
     }
     if (!registeredUser.is_leader) {
       // La peticion debe contar con el id del usuario y el id del equipo
-      await _teamRequestService.createTeamRequest(user.id, team.id);
+      try{
+        await _teamRequestService.createTeamRequest(user.id, team.id);
+      } catch {
+        const error = new Error();
+        error.status = 400;
+        error.message = "Ya existe una peticion tuya a este equipo.";
+        throw error;
+      }
       return {
         success: true,
         message: `Team request de ${email} enviado al líder del equipo ${team_name}.`
@@ -350,6 +349,25 @@ class RegisteredUserService extends BaseService {
       success: false,
       message: "El usuario no es líder y no tiene equipo."
     };
+  }
+
+  async getTeamByUserId(body) {
+    const { id } = body;
+    const registeredUser = await _RegisteredUserRepository.get(id);
+    if (!registeredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "no estas registrado.";
+      throw error;
+    }
+    if (!registeredUser.team_id) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "el usuario no tiene equipo.";
+      throw error;
+    }
+    const team = await _teamService.get(registeredUser.team_id)
+    return team;
   }
 
   async manageTeamRequest(body) {
