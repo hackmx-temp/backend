@@ -7,5 +7,3 @@ module.exports.generateToken = function(user) {
     email: user.email,
     }, JWT_SECRET, { expiresIn: "4h" });
 };
-
-module.exports = { generateToken };
