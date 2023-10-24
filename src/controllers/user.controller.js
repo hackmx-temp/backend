@@ -36,8 +36,8 @@ class UserController {
   }
 
   async validCreate(req, res){
-    const { body } = req;
-    const campus = body.campus;
+    // const { body } = req;
+    /* const campus = body.campus;
     const count = await _userService.countByCampus(campus);
     if (campus !== "Toluca" || count >= UserController.MAX_USERS_PER_CAMPUS) {
       const error = new Error();
@@ -45,8 +45,11 @@ class UserController {
       error.message = `Registros para ${campus} completados.`;
       throw error;
     }
-    const userCreated = await _userService.create(body);
-    return res.status(201).send({id: userCreated.id});
+    const userCreated = await _userService.create(body); */
+    const error = new Error();
+    error.status = 400;
+    error.message = `Registros completados.`;
+    return res.status(201).send(error);
   }
 
   async countByCampus(req, res){
