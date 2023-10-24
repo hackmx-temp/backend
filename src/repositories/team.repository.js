@@ -19,7 +19,7 @@ class TeamRepository extends BaseRepository {
     });
   }
 
-  async addMember(teamId, email) {
+  async addMember(teamId, name, email, campus, enrollment_id, semester) {
     const team = await super.get(teamId);
     if (team) {
       let members = team.getDataValue('members') ? [...team.getDataValue('members')] : []; // Clona el array existente o crea uno nuevo
@@ -28,7 +28,13 @@ class TeamRepository extends BaseRepository {
         throw new Error('Los grupos no pueden tener más de 5 personas.');
       }
 
-      members.push(email); // Agregar el nuevo email al array
+      const existingMember = members.find(member => member.email === email);
+      if (existingMember) {
+        throw new Error('El miembro ya está en el equipo');
+      }
+
+      const member = {enrollment_id, name, email, campus, semester}
+      members.push(member);
       team.setDataValue('members', members); // Establecer el nuevo valor de members
 
       if (members.length === 5) {
@@ -40,19 +46,20 @@ class TeamRepository extends BaseRepository {
     return team;
   }
 
-  async removeMember(teamId, email) {
-    const team = await _team.get(teamId);
+  async removeMember(teamId, name, email, campus, enrollment_id, semester) {
+    const team = await super.get(teamId);
     if (team) {
-      const index = team.members.indexOf(email);
-      if (index !== -1) {
-        team.members.splice(index, 1);
-        await team.save();
-        return team;
+      const members = team.getDataValue('members');
+      const filteredMembers = members.filter(member => member.email !== email);
+      if (members.length === filteredMembers.length) {
+        throw new Error('El usuario ya no está en el equipo.');
       }
-    }
-    return team;
-  }
 
+      team.setDataValue('members', filteredMembers)
+      await team.save();
+      return team;
+    }
+  }
 }
 
 module.exports = TeamRepository;

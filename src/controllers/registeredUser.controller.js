@@ -5,8 +5,8 @@ class RegisteredUserController {
   }
 
   async get(req, res) {
-    const { registeredUserId } = req.params;
-    const registeredUser = await _registeredUserService.get(registeredUserId);
+    const { id } = req.body;
+    const registeredUser = await _registeredUserService.get(id);
     return res.send(registeredUser);
   }
 
@@ -15,16 +15,21 @@ class RegisteredUserController {
     return res.send(registeredUsers);
   }
 
+  /*
+  // Create manejado por auth services
   async create(req, res) {
     const { body } = req;
     const registeredUser = await _registeredUserService.create(body);
     return res.send(registeredUser);
   }
+   */
 
   async update(req, res) {
     const { body } = req;
-    const { registeredUserId } = req.params;
-    const updatedRegisteredUser = await _registeredUserService.update(registeredUserId, body);
+    const { id } = body;
+    delete body.id;
+    delete body.email;
+    const updatedRegisteredUser = await _registeredUserService.update(id, body);
     return res.send(updatedRegisteredUser);
   }
 
@@ -38,6 +43,24 @@ class RegisteredUserController {
     const { body } = req;
     const newTeam = await _registeredUserService.createTeam(body)
     return res.send(newTeam)
+  }
+
+  async addMember(req, res) {
+    const { body } = req;
+    const response = await _registeredUserService.addMember(body)
+    return res.send(response)
+  }
+
+  async removeMember(req, res) {
+    const { body } = req;
+    const response = await _registeredUserService.removeMember(body)
+    return res.send(response)
+  }
+
+  async getTeamByLeader(req, res) {
+    const { body } = req;
+    const team = await _registeredUserService.getTeamByLeader(body)
+    return res.send(team)
   }
 
   async updateTeamName(req, res) {
@@ -63,10 +86,11 @@ class RegisteredUserController {
     const updatedTeamRequest = await _registeredUserService.manageTeamRequest(body)
     return res.send(updatedTeamRequest)
   }
+
   async getTeamRequests(req, res) {
     const { id } = req.body;
-    const newTeamRequest = await _registeredUserService.getTeamRequests(id)
-    return res.send(newTeamRequest)
+    const TeamRequests = await _registeredUserService.getTeamRequests(id)
+    return res.send(TeamRequests)
   }
 }
 

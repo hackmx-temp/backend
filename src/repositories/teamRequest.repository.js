@@ -31,7 +31,6 @@ class TeamRequestRepository extends BaseRepository {
     });
   }
 
-
 }
 
 module.exports = TeamRequestRepository;

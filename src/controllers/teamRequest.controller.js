@@ -15,6 +15,8 @@ class TeamRequestController {
     return res.send(teamRequests);
   }
 
+  //Manejado por usuario registrado
+  /*
   async create(req, res) {
     const { body } = req;
     const teamRequest = await _teamRequestService.create(body);
@@ -33,6 +35,7 @@ class TeamRequestController {
     const deletedTeamRequest = await _teamRequestService.delete(teamRequestId);
     return res.send(deletedTeamRequest);
   }
+  */
 }
 
 module.exports = TeamRequestController;
