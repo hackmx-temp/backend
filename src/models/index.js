@@ -111,6 +111,11 @@ const Team = sequelize.define('Team', {
     unique: true,
     allowNull: false
   },
+  campus: {
+    type: DataTypes.ENUM,
+    values: ['CCM', 'CSF', 'Toluca', 'CEM'],
+    allowNull: false
+  },
   is_completed: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,

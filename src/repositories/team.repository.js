@@ -46,6 +46,12 @@ class TeamRepository extends BaseRepository {
     return team;
   }
 
+  async countByCampus(campus){
+    return _team.count({
+      where: { campus }
+    });
+  }
+
   async removeMember(teamId, email) {
     const team = await super.get(teamId);
     if (team) {

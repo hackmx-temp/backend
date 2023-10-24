@@ -2,8 +2,14 @@ const { generateToken } = require("../helpers/jwt.helper");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 let _userService = null,
-    _registeredUserService = null,
-    _passwordResetTokenService = null;
+  _registeredUserService = null,
+  _passwordResetTokenService = null;
+
+const PASSWORD_VALIDATORS = {
+  hasUpperCase: (password) => /[A-Z]/.test(password),
+  hasSpecialChar: (password) => /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password),
+  hasNumber: (password) => /[0-9]/.test(password),
+};
 
 class AuthService {
   constructor({ UserService, RegisteredUserService, PasswordResetTokenService }) {
@@ -21,24 +27,43 @@ class AuthService {
       error.message = "Email no está registrado.";
       throw error;
     }
-    try{
-      const registeredUserExist = await _registeredUserService.get(userExist.id);
-      if (registeredUserExist) {
-        const error = new Error();
-        error.status = 400;
-        error.message = "Ya existe un registro con este email.";
-        throw error;
-      }
-      
-    } catch{
+
+    if(!PASSWORD_VALIDATORS.hasUpperCase(password)){
+      const error = new Error();
+      error.status = 400;
+      error.message = "La contraseña debe contener al menos una mayúscula.";
+      throw error;
+    }
+
+    if(!PASSWORD_VALIDATORS.hasSpecialChar(password)){
+      const error = new Error();
+      error.status = 400;
+      error.message = "La contraseña debe contener al menos un caracter especial.";
+      throw error;
+    }
+
+    if(!PASSWORD_VALIDATORS.hasNumber(password)){
+      const error = new Error();
+      error.status = 400;
+      error.message = "La contraseña debe contener al menos un número.";
+      throw error;
+    }
+
+    console.log(userExist.id)
+    try {
       await _registeredUserService.create({
         id: userExist.id,
         password: password,
         user_id: userExist.id
       });
+      const token = generateToken(userExist);
+      return { token };
+    } catch {
+      const error = new Error();
+      error.status = 400;
+      error.message = "Ya te haz registrado.";
+      throw error;
     }
-    const token = generateToken(userExist);
-    return { token };
   }
 
   async logIn(user) {
@@ -92,7 +117,7 @@ class AuthService {
 
   verifyJWT(body) {
     const { token } = body;
-    return jwt.verify(token, JWT_SECRET, function(err, _) {
+    return jwt.verify(token, JWT_SECRET, function (err, _) {
       if (err) {
         const error = new Error();
         error.message = "Invalid token.";
