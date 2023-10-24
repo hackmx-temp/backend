@@ -5,7 +5,7 @@ module.exports = function({ AuthController }) {
 
   router.post("/signup", AuthController.signUp);
   router.post("/login", AuthController.logIn);
-  router.patch("/reset-password", AuthController.resetPassword);
+  router.patch("/resetPassword", AuthController.resetPassword);
 
   return router;
 };

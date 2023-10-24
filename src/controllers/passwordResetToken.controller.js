@@ -24,8 +24,8 @@ class PasswordResetTokenController {
     }
 
     async validate(req, res) {
-        const { token } = req.params;
-        await passwordResetTokenService.validate(token);
+        const { token } = req.body;
+        await passwordResetTokenService.validateToken(token);
         return res.send({
             message: "Token validated successfully"    
         });

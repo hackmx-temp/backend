@@ -80,7 +80,11 @@ class AuthService {
       error.message = "Usuario no existe.";
       throw error;
     }
-    return await _registeredUserService.update(registeredUserExist.id, { password: password });
+    await _registeredUserService.update(registeredUserExist.id, { password: password });
+    await _passwordResetTokenService.deleteWithToken(token);
+    return {
+      message: "Contraseña actualizada exitosamente."
+    };
   }
 }
 

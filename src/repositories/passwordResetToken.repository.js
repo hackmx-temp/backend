@@ -19,6 +19,10 @@ class PasswordResetTokenRepository extends BaseRepository {
     return await _passwordResetToken.findOne({ where: { token: token } });
   }
 
+  async getWithUserId(userId) {
+    return await _passwordResetToken.findOne({ where: { user_id: userId } });
+  }
+
   // Pass a token to delete the password reset token instance
   async deleteWithToken(token) {
     return await _passwordResetToken.destroy({ where: { token: token } });

@@ -8,4 +8,4 @@ const generateToken = function(user) {
     }, JWT_SECRET, { expiresIn: "4h" });
 };
 
-module.exports = generateToken;
+module.exports = { generateToken };

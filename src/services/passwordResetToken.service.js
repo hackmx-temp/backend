@@ -17,12 +17,20 @@ class PasswordResetTokenService extends BaseService {
         return await _passwordResetTokenRepository.getWithToken(token);
     }
 
+    async getWithUserId(userId) {
+        return await _passwordResetTokenRepository.getWithUserId(userId);
+    }
+
     async deleteWithToken(token) {
         return await _passwordResetTokenRepository.deleteWithToken(token);
     }
 
     async createForUser(userId) {
         const token = this.generateToken();
+        const itExists = await _passwordResetTokenRepository.getWithUserId(userId);
+        if (itExists) {
+            await _passwordResetTokenRepository.deleteWithToken(itExists.token);
+        }
         return await _passwordResetTokenRepository.createForUser(token, userId);
     }
 
@@ -36,6 +44,7 @@ class PasswordResetTokenService extends BaseService {
         }
         const now = new Date();
         if (now > passwordResetToken.expire_at) {
+            await _passwordResetTokenRepository.deleteWithToken(token);
             const error = new Error();
             error.status = 400;
             error.message = "Token expirado.";

@@ -161,7 +161,8 @@ const PasswordResetToken = sequelize.define('PasswordResetToken', {
       model: 'RegisteredUser',
       key: 'id'
     },
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 }, {freezeTableName: true});
 
