@@ -9,6 +9,16 @@ class TeamRequestService extends BaseService {
     _TeamService = TeamService;
   }
 
+  async deleteByUserID(userID){
+    if (!userID) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "user id debe ser enviado.";
+      throw error;
+    }
+    return await _TeamRequestRepository.deleteByUserID(userID);
+  }
+
 
   async getTeamRequestsByTeamId(teamID) {
     if (!teamID) {

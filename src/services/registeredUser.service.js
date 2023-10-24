@@ -413,6 +413,7 @@ class RegisteredUserService extends BaseService {
           team_id: team_id
         });
       }
+      _teamRequestService.deleteByUserID(requestUser.id);
       return {
         success: true,
         message: `La peticion fue ${status ? "aceptada" : "rechazada"} por el líder del equipo.`

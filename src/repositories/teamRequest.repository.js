@@ -31,6 +31,12 @@ class TeamRequestRepository extends BaseRepository {
     });
   }
 
+  async deleteByUserID(userID) {
+    return _teamRequest.destroy({
+      where: { user_id: userID },
+    });
+  }
+
 }
 
 module.exports = TeamRequestRepository;
