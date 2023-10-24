@@ -22,7 +22,7 @@ class RegisteredUserRepository extends BaseRepository {
     return registeredUser ? registeredUser.is_leader : false;
   }
 
-  async updateLeader(id, leader_status, team_id) {
+  async updateMember(id, leader_status, team_id) {
     return await _registeredUser.update(
       { is_leader: leader_status, team_id: team_id },
       { where: { id } }

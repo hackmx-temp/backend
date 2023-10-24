@@ -5,7 +5,7 @@ class RegisteredUserController {
   }
 
   async get(req, res) {
-    const { id } = body;
+    const { id } = req.body;
     const registeredUser = await _registeredUserService.get(id);
     return res.send(registeredUser);
   }
@@ -43,6 +43,24 @@ class RegisteredUserController {
     const { body } = req;
     const newTeam = await _registeredUserService.createTeam(body)
     return res.send(newTeam)
+  }
+
+  async addMember(req, res) {
+    const { body } = req;
+    const response = await _registeredUserService.addMember(body)
+    return res.send(response)
+  }
+
+  async removeMember(req, res) {
+    const { body } = req;
+    const response = await _registeredUserService.removeMember(body)
+    return res.send(response)
+  }
+
+  async getTeamByLeader(req, res) {
+    const { body } = req;
+    const team = await _registeredUserService.getTeamByLeader(body)
+    return res.send(team)
   }
 
   async updateTeamName(req, res) {
