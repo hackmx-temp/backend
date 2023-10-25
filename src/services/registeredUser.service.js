@@ -86,7 +86,6 @@ class RegisteredUserService extends BaseService {
       error.message = "usuario no existe.";
       throw error;
     }
-    console.log(id);
     const registeredUser = await _RegisteredUserRepository.get(id);
     if (!registeredUser) {
       const error = new Error();
@@ -105,7 +104,7 @@ class RegisteredUserService extends BaseService {
       campus: user.campus,
     });
     await _RegisteredUserRepository.updateMember(registeredUser.id, true, team.id);
-    const newMember = await _teamService.addMember({
+    const newTeam = await _teamService.addMember({
       teamId : team.id,
       name : user.name,
       email : user.email,
@@ -113,19 +112,12 @@ class RegisteredUserService extends BaseService {
       enrollment_id : user.enrollment_id,
       semester : user.semester
     })
-    return newMember;
+    return newTeam;
   }
 
   async addMember(body) {
     const { id, requested_email } = body;
-    const user = await _userService.get(id);
-    if (!user) {
-      const error = new Error();
-      error.status = 400;
-      error.message = "usuario no existe.";
-      throw error;
-    }
-    const registeredUser = await _RegisteredUserRepository.getByUserId(id);
+    const registeredUser = await _RegisteredUserRepository.get(id);
     if (!registeredUser) {
       const error = new Error();
       error.status = 400;
@@ -137,6 +129,13 @@ class RegisteredUserService extends BaseService {
       const error = new Error();
       error.status = 400;
       error.message = "usuario que quieren agregar no existe.";
+      throw error;
+    }
+
+    if(possible_user.id === registeredUser.id){
+      const error = new Error();
+      error.status = 400;
+      error.message = "ya estas dentro del equipo, agrega a alguien mas";
       throw error;
     }
 
