@@ -43,17 +43,11 @@ class EmailService {
   }
 
   async resetPasswordEmail(userEmail, url) {
-    try{
-      const existingUser = await _userService.getUserByEmail(userEmail);
-      const existingRegisteredUser = await _registeredUserService.get(existingUser.id);
-      const token = await _passwordResetTokenService.createForUser(existingRegisteredUser.id);
-      url += `/${token.token}`
-      return await this.genericSendEmailToUser(email, userEmail, 'Recuperar contraseña', 'resetPassword', { resetLink: url, email: email });
-    } catch { // Para proteger los datos, se manda con un mensaje de éxito
-      return {
-        message: 'Correo enviado exitosamente',
-      }
-    }
+    const existingUser = await _userService.getUserByEmail(userEmail);
+    const existingRegisteredUser = await _registeredUserService.get(existingUser.id);
+    const token = await _passwordResetTokenService.createForUser(existingRegisteredUser.id);
+    url += `/${token.token}`
+    return await this.genericSendEmailToUser(email, userEmail, 'Recuperar contraseña', 'resetPassword', { resetLink: url, email: email });
   }
 
   async genericSendEmailToUser(fromEmail, toEmail, subject, templateName, templateParams) {
