@@ -132,6 +132,14 @@ class RegisteredUserService extends BaseService {
       throw error;
     }
 
+    const possibleRegisteredUser = await _RegisteredUserRepository.getByUserId(possible_user.id);
+    if (!possibleRegisteredUser) {
+      const error = new Error();
+      error.status = 400;
+      error.message = "el usuario que quieren agregar no esta registrado, regístrate primero en www.hackmx.mx/sign-up";
+      throw error;
+    }
+
     if(possible_user.id === registeredUser.id){
       const error = new Error();
       error.status = 400;
