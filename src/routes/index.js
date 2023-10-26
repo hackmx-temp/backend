@@ -20,10 +20,14 @@ module.exports = function({
 }){
     const router = express.Router()
     const apiRoutes = express.Router();
-
+    const corsOptions = {
+        origin: ['https://www.hackmx.mx', 'https://hackmx.mx'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      };
+      
     apiRoutes
         .use(express.json())
-        .use(cors())
+        .use(cors(corsOptions))
         .use(helmet())
         .use(compression())
 
