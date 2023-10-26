@@ -126,6 +126,12 @@ const Team = sequelize.define('Team', {
     allowNull: true,
     defaultValue: null,
   },
+  sponsor: {
+    type: DataTypes.ENUM,
+    values: ['No asignado', 'AWS', 'DaCompass', 'Liverpool', 'La Moderna', 'Thales'],
+    defaultValue: 'No asignado',
+    allowNull: false
+  },
   members: {
     type: DataTypes.JSON, // Use JSON data type to store an array of emails
     validate: {
