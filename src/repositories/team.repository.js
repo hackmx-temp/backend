@@ -37,10 +37,6 @@ class TeamRepository extends BaseRepository {
       members.push(member);
       team.setDataValue('members', members); // Establecer el nuevo valor de members
 
-      if (members.length === 5) {
-        team.setDataValue('is_completed', true);
-      }
-
       await team.save(); // Guardar los cambios
     }
     return team;

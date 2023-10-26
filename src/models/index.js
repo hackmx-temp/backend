@@ -119,7 +119,7 @@ const Team = sequelize.define('Team', {
   is_completed: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
-    allowNull: false
+    allowNull: false,
   },
   completion_time: {
     type: DataTypes.DATE,
@@ -140,10 +140,21 @@ const Team = sequelize.define('Team', {
           throw new Error('Los grupos son de máximo 5 personas.');
         }
       }
-    }
+    },
   }
 }, {
   freezeTableName: true,
+  hooks: {
+    beforeUpdate: (team) => {
+      if (team.members && team.members.length === 5 && !team.is_completed) {
+        team.is_completed = true;
+        team.completion_time = new Date();
+      } else {
+        team.is_completed = false;
+        team.completion_time = null;
+      }
+    }
+  }
 });
 
 const TeamRequest = sequelize.define('TeamRequest', {
