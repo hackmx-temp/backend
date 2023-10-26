@@ -121,6 +121,11 @@ const Team = sequelize.define('Team', {
     defaultValue: false,
     allowNull: false
   },
+  completion_time: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+  },
   members: {
     type: DataTypes.JSON, // Use JSON data type to store an array of emails
     validate: {
