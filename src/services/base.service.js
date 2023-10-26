@@ -53,8 +53,8 @@ class BaseService {
       return await this.repository.delete(id);
     }
 
-    async count(){
-      return await this.repository.count();
+    async count(whereClause = null){
+      return await this.repository.count(whereClause);
     }
   }
 

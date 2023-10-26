@@ -26,8 +26,11 @@ class BaseRepository {
       return true;
     }
 
-    async count(){
-      return await this.model.count();
+    async count(whereClause){
+      if(!whereClause){
+        return await this.model.count();
+      }
+      return await this.model.count(whereClause)
     }
 
 }
