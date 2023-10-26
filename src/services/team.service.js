@@ -4,8 +4,8 @@ let _TeamRepository = null;
 const LIMITS = {
   CCM: 18,
   Toluca: 10,
-  CEM: 7,
-  CSF: 4
+  CEM: 3,
+  CSF: 3,
 }
 class TeamService extends BaseService {
   constructor({ TeamRepository }) {
