@@ -37,7 +37,8 @@ class UserController {
 
   async validCreate(req, res){
     const { body } = req;
-    return await _userService.create(body);
+    const userCreated = await _userService.create(body);
+    return { id: userCreated._id };
   }
 
   async countByCampus(req, res){
