@@ -1,5 +1,12 @@
 const BaseService = require('./base.service');
 let _TeamRepository = null;
+
+const LIMITS = {
+  CCM: 18,
+  Toluca: 10,
+  CEM: 7,
+  CSF: 4
+}
 class TeamService extends BaseService {
   constructor({ TeamRepository }) {
     super(TeamRepository);
@@ -19,7 +26,7 @@ class TeamService extends BaseService {
   async create(team) {
     const campus = team.campus;
     const count = await this.countByCampus(campus);
-    if (count >= 0) {
+    if (count >= LIMITS[campus]) {
       const error = new Error();
       error.status = 400;
       error.message = "El campus ya no tiene cupo.";
