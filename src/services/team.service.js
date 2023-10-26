@@ -3,7 +3,7 @@ let _TeamRepository = null;
 
 const LIMITS = {
   CCM: 20,
-  Toluca: 9,
+  Toluca: 10,
   CEM: 7,
   CSF: 4
 }
