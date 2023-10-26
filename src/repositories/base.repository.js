@@ -26,6 +26,10 @@ class BaseRepository {
       return true;
     }
 
+    async count(){
+      return await this.model.count();
+    }
+
 }
 
 module.exports = BaseRepository;
